@@ -1,9 +1,14 @@
 'use client';
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 import { Receipt } from '@/types';
-import { Printer } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 
 interface ReceiptModalProps {
   receipt: Receipt | null;
@@ -14,97 +19,111 @@ interface ReceiptModalProps {
 export function ReceiptModal({ receipt, isOpen, onClose }: ReceiptModalProps) {
   if (!receipt) return null;
 
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0,
+    }).format(price);
+  };
+
   const handlePrint = () => {
     window.print();
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto print:text-black">
         <DialogHeader>
-          <DialogTitle>Receipt</DialogTitle>
+          <DialogTitle className="text-center text-2xl font-bold">
+            ☕ Bean Coffee Shop
+          </DialogTitle>
         </DialogHeader>
-        <div className="space-y-4 text-sm print:text-xs">
-          {/* Header */}
-          <div className="text-center border-b pb-3">
-            <h3 className="text-lg font-bold">BeanStock Coffee</h3>
-            <p className="text-muted-foreground text-xs">Professional Coffee Shop</p>
-          </div>
 
-          {/* Invoice Info */}
-          <div className="space-y-1 text-xs border-b pb-3">
-            <div className="flex justify-between">
-              <span>Invoice:</span>
-              <span className="font-mono font-bold">{receipt.invoice_number}</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Date:</span>
-              <span>{receipt.date}</span>
-            </div>
+        <div className="space-y-4">
+          {/* Receipt Header */}
+          <div className="text-center space-y-1 text-sm border-b pb-3">
+            <p className="font-bold text-lg">RECEIPT</p>
+            <p className="font-mono">Invoice: {receipt.invoice_number}</p>
+            <p className="text-xs text-gray-600">{receipt.date}</p>
+            <p className="text-xs text-gray-600">Cashier: {receipt.cashier}</p>
           </div>
 
           {/* Items */}
-          <div className="space-y-1 border-b pb-3">
-            {receipt.items.map((item) => (
-              <div key={item.product_id} className="flex justify-between text-xs">
-                <span>
-                  {item.name} x{item.quantity}
-                </span>
-                <span>Rp {(item.price * item.quantity).toLocaleString()}</span>
-              </div>
-            ))}
+          <div className="space-y-2">
+            <p className="font-bold text-sm">Items:</p>
+            <div className="space-y-2 border-b pb-3">
+              {receipt.items.map((item, index) => (
+                <div key={index} className="flex justify-between text-sm">
+                  <div className="flex-1">
+                    <p className="font-semibold">{item.name}</p>
+                    <p className="text-gray-600 text-xs">
+                      {formatPrice(item.price)} x {item.quantity}
+                    </p>
+                  </div>
+                  <p className="font-semibold">{formatPrice(item.subtotal)}</p>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Totals */}
-          <div className="space-y-1 border-b pb-3">
-            <div className="flex justify-between text-xs">
+          <div className="space-y-2">
+            <div className="flex justify-between text-sm">
               <span>Subtotal</span>
-              <span>Rp {receipt.subtotal.toLocaleString()}</span>
+              <span className="font-semibold">{formatPrice(receipt.subtotal)}</span>
             </div>
-            <div className="flex justify-between text-xs">
+            <div className="flex justify-between text-sm">
               <span>Tax (10%)</span>
-              <span>Rp {receipt.tax.toLocaleString()}</span>
+              <span className="font-semibold">{formatPrice(receipt.tax)}</span>
             </div>
-            <div className="flex justify-between font-bold">
-              <span>Total</span>
-              <span>Rp {receipt.total.toLocaleString()}</span>
+            <Separator />
+            <div className="flex justify-between text-lg font-bold">
+              <span>TOTAL</span>
+              <span className="text-orange-600">{formatPrice(receipt.total)}</span>
             </div>
           </div>
 
+          <Separator />
+
           {/* Payment Info */}
-          <div className="space-y-1 border-b pb-3 text-xs">
+          <div className="space-y-1 text-sm border-b pb-3">
             <div className="flex justify-between">
               <span>Payment Method</span>
-              <span className="font-bold">{receipt.payment_method}</span>
+              <span className="font-semibold">{receipt.payment_method}</span>
             </div>
             <div className="flex justify-between">
-              <span>Paid Amount</span>
-              <span>Rp {receipt.paid_amount.toLocaleString()}</span>
+              <span>Paid</span>
+              <span className="font-semibold">{formatPrice(receipt.paid_amount)}</span>
             </div>
-            {receipt.change > 0 && (
-              <div className="flex justify-between text-primary font-bold">
-                <span>Change</span>
-                <span>Rp {receipt.change.toLocaleString()}</span>
-              </div>
-            )}
+            <div className="flex justify-between">
+              <span>Change</span>
+              <span className="font-semibold">{formatPrice(receipt.change)}</span>
+            </div>
           </div>
 
           {/* Footer */}
-          <div className="text-center text-xs text-muted-foreground">
+          <div className="text-center text-xs text-gray-600 border-b pb-3">
             <p>Thank you for your purchase!</p>
-            <p>Enjoy your coffee!</p>
+            <p>Please come again ☕</p>
           </div>
-        </div>
 
-        {/* Actions */}
-        <div className="flex gap-2 pt-4 print:hidden">
-          <Button onClick={handlePrint} variant="outline" className="flex-1">
-            <Printer className="w-4 h-4 mr-2" />
-            Print
-          </Button>
-          <Button onClick={onClose} className="flex-1">
-            Close
-          </Button>
+          {/* Action Buttons */}
+          <div className="grid grid-cols-2 gap-2 print:hidden">
+            <Button 
+              onClick={handlePrint} 
+              variant="outline"
+              className="border-orange-600 text-orange-600 hover:bg-orange-50"
+            >
+              🖨️ Print
+            </Button>
+            <Button 
+              onClick={onClose} 
+              className="bg-orange-600 hover:bg-orange-700"
+            >
+              ✅ Done
+            </Button>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

@@ -2,12 +2,17 @@ import apiClient from './api';
 
 export interface Product {
   id: number;
-  category_id: number;
+  category_id?: number;
   name: string;
-  price: number;
+  price: string | number;
   stock: number;
   image: string | null;
   description?: string;
+  is_active?: boolean | null;
+  category?: {
+    id: number;
+    name: string;
+  };
   created_at?: string;
   updated_at?: string;
 }
@@ -20,22 +25,52 @@ export interface Category {
 
 export interface ProductResponse {
   data: Product[];
-  status: string;
+  status?: string;
 }
 
 export const productService = {
-  // Get all products
-  async getProducts() {
+  async getCashierProducts() {
     try {
-      const response = await apiClient.get<ProductResponse>('/products');
+      const endpoint = '/cashier/products'; 
+      
+      console.log('🟢 [ProductService] Starting getCashierProducts');
+      console.log('🟢 [ProductService] Endpoint:', endpoint);
+      console.log('🟢 [ProductService] API Base URL:', apiClient.defaults.baseURL);
+      
+      const response = await apiClient.get<ProductResponse>(endpoint);
+      
+      console.log('✅ [ProductService] Success! Received data:', {
+        count: response.data?.data?.length,
+        data: response.data,
+      });
+      
       return response.data;
-    } catch (error) {
-      console.error('Error fetching products:', error);
+    } catch (error: any) {
+      console.error('❌ [ProductService] ERROR:', {
+        errorMessage: error.message,
+        errorCode: error.code,
+        responseStatus: error.response?.status,
+        responseURL: error.response?.config?.url,
+        requestedEndpoint: '/cashier/products',
+        config: error.config,
+        fullError: error,
+      });
       throw error;
     }
   },
 
-  // Get single product
+  async getProducts() {
+    try {
+      console.log('🟢 [ProductService] Starting getProducts');
+      const response = await apiClient.get<ProductResponse>('/products');
+      console.log('✅ [ProductService] Products fetched:', response.data);
+      return response.data;
+    } catch (error: any) {
+      console.error('❌ [ProductService] Error fetching products:', error);
+      throw error;
+    }
+  },
+
   async getProduct(id: number) {
     try {
       const response = await apiClient.get<{ data: Product }>(`/products/${id}`);
@@ -46,10 +81,11 @@ export const productService = {
     }
   },
 
-  // Get products by category
   async getProductsByCategory(categoryId: number) {
     try {
-      const response = await apiClient.get<ProductResponse>(`/categories/${categoryId}/products`);
+      const response = await apiClient.get<ProductResponse>(
+        `/categories/${categoryId}/products`
+      );
       return response.data;
     } catch (error) {
       console.error(`Error fetching products for category ${categoryId}:`, error);
@@ -57,7 +93,6 @@ export const productService = {
     }
   },
 
-  // Get all categories
   async getCategories() {
     try {
       const response = await apiClient.get<{ data: Category[] }>('/categories');
@@ -68,7 +103,6 @@ export const productService = {
     }
   },
 
-  // Create product (admin only)
   async createProduct(data: Partial<Product>) {
     try {
       const response = await apiClient.post<{ data: Product }>('/products', data);
@@ -79,10 +113,12 @@ export const productService = {
     }
   },
 
-  // Update product (admin only)
   async updateProduct(id: number, data: Partial<Product>) {
     try {
-      const response = await apiClient.put<{ data: Product }>(`/products/${id}`, data);
+      const response = await apiClient.put<{ data: Product }>(
+        `/products/${id}`,
+        data
+      );
       return response.data;
     } catch (error) {
       console.error(`Error updating product ${id}:`, error);
@@ -90,7 +126,6 @@ export const productService = {
     }
   },
 
-  // Delete product (admin only)
   async deleteProduct(id: number) {
     try {
       const response = await apiClient.delete(`/products/${id}`);

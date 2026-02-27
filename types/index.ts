@@ -3,29 +3,34 @@ export interface Product {
   name: string;
   price: number;
   stock: number;
-  image?: string;
+  image?: string | null;
   category?: string;
 }
 
 export interface CartItem {
+  id: number;
   product_id: string;
   name: string;
   price: number;
   quantity: number;
-  image?: string;
+  subtotal: number;
+  image?: string | null;
 }
 
 export interface Receipt {
   invoice_number: string;
   date: string;
+  cashier: string;
   items: CartItem[];
   subtotal: number;
   tax: number;
   total: number;
-  payment_method: string;
+  payment_method: PaymentMethod;
   paid_amount: number;
   change: number;
 }
+
+export type PaymentMethod = 'CASH' | 'QRIS' | 'DEBIT';
 
 export interface TransactionPayload {
   items: Array<{ product_id: string; qty: number; price: number }>;

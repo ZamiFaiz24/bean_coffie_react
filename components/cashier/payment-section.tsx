@@ -1,110 +1,75 @@
 'use client';
 
+import { useState } from 'react';
+import { PaymentMethod } from '@/types';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
 
 interface PaymentSectionProps {
+  subtotal: number;
+  tax: number;
   total: number;
-  onPayment?: (method: string, amount: number) => void;
+  onClearCart: () => void;
+  onCompleteOrder: (paymentMethod: PaymentMethod) => void;
+  disabled?: boolean;
 }
 
-export function PaymentSection({ total, onPayment }: PaymentSectionProps) {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const method = formData.get('payment-method') as string;
-    const amount = Number(formData.get('amount'));
-    
-    if (onPayment) {
-      onPayment(method, amount);
-    }
-  };
+export function PaymentSection({
+  subtotal,
+  tax,
+  total,
+  onClearCart,
+  onCompleteOrder,
+  disabled = false,
+}: PaymentSectionProps) {
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('CASH');
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Payment</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Payment Method */}
-          <div className="space-y-2">
-            <Label>Payment Method</Label>
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <input
-                  type="radio"
-                  id="cash"
-                  name="payment-method"
-                  value="cash"
-                  defaultChecked
-                  className="w-4 h-4 text-orange-600 focus:ring-orange-500"
-                />
-                <Label htmlFor="cash" className="cursor-pointer font-normal">
-                  💵 Cash
-                </Label>
-              </div>
-              
-              <div className="flex items-center space-x-2">
-                <input
-                  type="radio"
-                  id="card"
-                  name="payment-method"
-                  value="card"
-                  className="w-4 h-4 text-orange-600 focus:ring-orange-500"
-                />
-                <Label htmlFor="card" className="cursor-pointer font-normal">
-                  💳 Card
-                </Label>
-              </div>
-              
-              <div className="flex items-center space-x-2">
-                <input
-                  type="radio"
-                  id="qris"
-                  name="payment-method"
-                  value="qris"
-                  className="w-4 h-4 text-orange-600 focus:ring-orange-500"
-                />
-                <Label htmlFor="qris" className="cursor-pointer font-normal">
-                  📱 QRIS
-                </Label>
-              </div>
-            </div>
-          </div>
+    <div className="space-y-4">
+      {/* Payment Method */}
+      <div className="space-y-2">
+        <Label htmlFor="payment-method" className="text-sm font-bold text-gray-700">
+          Payment Method
+        </Label>
+        <Select value={paymentMethod} onValueChange={(value) => setPaymentMethod(value as PaymentMethod)}>
+          <SelectTrigger id="payment-method" className="w-full border-2 border-orange-300 focus:border-orange-600">
+            <SelectValue placeholder="Select payment method" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="CASH">💵 Cash</SelectItem>
+            <SelectItem value="QRIS">📱 QRIS</SelectItem>
+            <SelectItem value="DEBIT">💳 Debit Card</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
 
-          {/* Total */}
-          <div className="bg-gray-50 p-3 rounded-lg">
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">Total:</span>
-              <span className="text-lg font-bold">
-                Rp {total.toLocaleString('id-ID')}
-              </span>
-            </div>
-          </div>
+      {/* Action Buttons */}
+      <div className="space-y-2">
+        <Button
+          onClick={onClearCart}
+          disabled={disabled}
+          variant="secondary"
+          className="w-full bg-gray-400 hover:bg-gray-500 text-white"
+        >
+          🗑️ Clear Cart
+        </Button>
 
-          {/* Amount Input */}
-          <div className="space-y-2">
-            <Label htmlFor="amount">Amount Paid</Label>
-            <Input
-              id="amount"
-              name="amount"
-              type="number"
-              placeholder="0"
-              min={total}
-              defaultValue={total}
-              required
-            />
-          </div>
-
-          {/* Process Button */}
-          <Button type="submit" className="w-full bg-orange-600 hover:bg-orange-700">
-            Process Payment
-          </Button>
-        </form>
-      </CardContent>
-    </Card>
+        <Button
+          onClick={() => onCompleteOrder(paymentMethod)}
+          disabled={disabled}
+          className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-6 text-lg font-bold"
+        >
+          ✅ Complete Order
+        </Button>
+      </div>
+    </div>
   );
 }
