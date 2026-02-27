@@ -1,106 +1,109 @@
 'use client';
 
-import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Radio } from '@/components/ui/radio';
 
 interface PaymentSectionProps {
-  subtotal: number;
-  tax: number;
   total: number;
-  onCheckout: (method: 'CASH' | 'QRIS' | 'DEBIT', paidAmount: number) => void;
-  isLoading: boolean;
-  isDisabled: boolean;
+  onPayment?: (method: string, amount: number) => void;
 }
 
-export function PaymentSection({
-  subtotal,
-  tax,
-  total,
-  onCheckout,
-  isLoading,
-  isDisabled,
-}: PaymentSectionProps) {
-  const [paymentMethod, setPaymentMethod] = useState<'CASH' | 'QRIS' | 'DEBIT'>('CASH');
-  const [paidAmount, setPaidAmount] = useState<number>(total);
-
-  const change = paymentMethod === 'CASH' ? Math.max(0, paidAmount - total) : 0;
-
-  const handleCheckout = () => {
-    if (paymentMethod === 'CASH' && paidAmount < total) {
-      alert('Paid amount must be >= total');
-      return;
+export function PaymentSection({ total, onPayment }: PaymentSectionProps) {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const method = formData.get('payment-method') as string;
+    const amount = Number(formData.get('amount'));
+    
+    if (onPayment) {
+      onPayment(method, amount);
     }
-    onCheckout(paymentMethod, paidAmount);
   };
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg">Summary</CardTitle>
+        <CardTitle>Payment</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
-        {/* Totals */}
-        <div className="space-y-2 border-b pb-4">
-          <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Subtotal</span>
-            <span>Rp {subtotal.toLocaleString()}</span>
-          </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Tax (10%)</span>
-            <span>Rp {tax.toLocaleString()}</span>
-          </div>
-          <div className="flex justify-between font-bold">
-            <span>Total</span>
-            <span className="text-primary">Rp {total.toLocaleString()}</span>
-          </div>
-        </div>
-
-        {/* Payment Method */}
-        <div className="space-y-3">
-          <p className="font-semibold text-sm">Payment Method</p>
-          {(['CASH', 'QRIS', 'DEBIT'] as const).map((method) => (
-            <div key={method} className="flex items-center space-x-2">
-              <Radio
-                id={method}
-                checked={paymentMethod === method}
-                onCheckedChange={() => setPaymentMethod(method)}
-              />
-              <label htmlFor={method} className="text-sm cursor-pointer">{method}</label>
-            </div>
-          ))}
-        </div>
-
-        {/* Cash Input */}
-        {paymentMethod === 'CASH' && (
-          <div className="space-y-2 pt-2 border-t">
-            <label className="text-sm font-semibold">Paid Amount</label>
-            <Input
-              type="number"
-              value={paidAmount}
-              onChange={(e) => setPaidAmount(Math.max(0, parseInt(e.target.value) || 0))}
-              className="text-lg"
-            />
-            <div className="bg-muted p-2 rounded">
-              <div className="flex justify-between text-sm">
-                <span>Change</span>
-                <span className="font-bold text-primary">Rp {change.toLocaleString()}</span>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Payment Method */}
+          <div className="space-y-2">
+            <Label>Payment Method</Label>
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <input
+                  type="radio"
+                  id="cash"
+                  name="payment-method"
+                  value="cash"
+                  defaultChecked
+                  className="w-4 h-4 text-orange-600 focus:ring-orange-500"
+                />
+                <Label htmlFor="cash" className="cursor-pointer font-normal">
+                  💵 Cash
+                </Label>
+              </div>
+              
+              <div className="flex items-center space-x-2">
+                <input
+                  type="radio"
+                  id="card"
+                  name="payment-method"
+                  value="card"
+                  className="w-4 h-4 text-orange-600 focus:ring-orange-500"
+                />
+                <Label htmlFor="card" className="cursor-pointer font-normal">
+                  💳 Card
+                </Label>
+              </div>
+              
+              <div className="flex items-center space-x-2">
+                <input
+                  type="radio"
+                  id="qris"
+                  name="payment-method"
+                  value="qris"
+                  className="w-4 h-4 text-orange-600 focus:ring-orange-500"
+                />
+                <Label htmlFor="qris" className="cursor-pointer font-normal">
+                  📱 QRIS
+                </Label>
               </div>
             </div>
           </div>
-        )}
 
-        {/* Checkout Button */}
-        <Button
-          onClick={handleCheckout}
-          disabled={isDisabled || isLoading}
-          className="w-full h-10 text-base font-semibold"
-          size="lg"
-        >
-          {isLoading ? 'Processing...' : 'Checkout'}
-        </Button>
+          {/* Total */}
+          <div className="bg-gray-50 p-3 rounded-lg">
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-gray-600">Total:</span>
+              <span className="text-lg font-bold">
+                Rp {total.toLocaleString('id-ID')}
+              </span>
+            </div>
+          </div>
+
+          {/* Amount Input */}
+          <div className="space-y-2">
+            <Label htmlFor="amount">Amount Paid</Label>
+            <Input
+              id="amount"
+              name="amount"
+              type="number"
+              placeholder="0"
+              min={total}
+              defaultValue={total}
+              required
+            />
+          </div>
+
+          {/* Process Button */}
+          <Button type="submit" className="w-full bg-orange-600 hover:bg-orange-700">
+            Process Payment
+          </Button>
+        </form>
       </CardContent>
     </Card>
   );

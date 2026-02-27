@@ -5,17 +5,15 @@ export interface User {
   name: string;
   email: string;
   role: 'admin' | 'cashier';
+  email_verified_at?: string | null;
   created_at?: string;
   updated_at?: string;
 }
 
+// Ubah interface ini untuk menyesuaikan response Laravel
 export interface AuthResponse {
-  data?: {
-    user: User;
-    token: string;
-  };
-  status: string;
-  message?: string;
+  user: User;
+  token: string;
 }
 
 export interface UserResponse {
@@ -27,21 +25,27 @@ export const authService = {
   // Login
   async login(email: string, password: string) {
     try {
+      console.log('🔵 Sending login request to:', apiClient.defaults.baseURL + '/auth/login');
+      
+      // Response langsung tanpa wrapper 'data'
       const response = await apiClient.post<AuthResponse>('/auth/login', {
         email,
         password,
       });
 
-      if (response.data.data?.token) {
+      console.log('✅ Login response:', response.data);
+
+      // Sesuaikan dengan response yang sebenarnya
+      if (response.data.token) {
         if (typeof window !== 'undefined') {
-          localStorage.setItem('auth_token', response.data.data.token);
-          localStorage.setItem('user', JSON.stringify(response.data.data.user));
+          localStorage.setItem('auth_token', response.data.token);
+          localStorage.setItem('user', JSON.stringify(response.data.user));
         }
       }
 
       return response.data;
     } catch (error) {
-      console.error('Error logging in:', error);
+      console.error('❌ Error logging in:', error);
       throw error;
     }
   },
