@@ -1,0 +1,67 @@
+export interface Product {
+  id: string;
+  name: string;
+  price: number;
+  stock: number;
+  image?: string;
+  category?: string;
+}
+
+export interface CartItem {
+  product_id: string;
+  name: string;
+  price: number;
+  quantity: number;
+  image?: string;
+}
+
+export interface Receipt {
+  invoice_number: string;
+  date: string;
+  items: CartItem[];
+  subtotal: number;
+  tax: number;
+  total: number;
+  payment_method: string;
+  paid_amount: number;
+  change: number;
+}
+
+export interface TransactionPayload {
+  items: Array<{ product_id: string; qty: number; price: number }>;
+  payment_method: 'CASH' | 'QRIS' | 'DEBIT';
+  paid_amount: number;
+  total_amount: number;
+}
+
+export interface SummaryCard {
+  title: string;
+  value: string | number;
+  subtitle: string;
+  icon: React.ReactNode;
+  trend?: number;
+}
+
+export interface TopProduct {
+  id: number;
+  name: string;
+  sold: number;
+  revenue: number;
+  rank: number;
+}
+
+export interface LowStockProduct {
+  id: number;
+  name: string;
+  stock: number;
+  status: 'out' | 'low';
+}
+
+export interface Transaction {
+  id: string;
+  invoiceNumber: string;
+  cashierName: string;
+  amount: number;
+  status: 'paid' | 'cancelled';
+  dateTime: string;
+}
