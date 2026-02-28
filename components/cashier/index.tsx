@@ -5,24 +5,24 @@ import { useRouter } from 'next/navigation';
 import { authService } from '@/services/auth';
 import { productService } from '@/services/products';
 import { useCart } from '@/hooks/useCart';
-import { Product, Receipt, PaymentMethod } from '@/types';
+import { Product, Receipt, PaymentMethod, Category } from '@/types';
 import { ProductGrid } from './product-grid';
-import { CartItems } from './cart-items';
-import { PaymentSection } from './payment-section';
+import { CartFloating } from './cart-floating';
 import { ReceiptModal } from './receipt-modal';
+import { Sidebar } from './sidebar';
+import { CashierLayout } from './layout';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-
-const TAX_RATE = 0.1;
 
 export function CashierPage() {
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [productsLoading, setProductsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   
   // Receipt state
   const [receipt, setReceipt] = useState<Receipt | null>(null);
@@ -57,28 +57,37 @@ export function CashierPage() {
 
     setUser(storedUser);
     setLoading(false);
-    fetchProducts();
+    fetchInitialData();
   }, [router]);
 
-  const fetchProducts = async () => {
+  const fetchInitialData = async () => {
     try {
       setProductsLoading(true);
-      const response = await productService.getCashierProducts();
       
-      // Transform data untuk match Product interface
-      const transformedProducts: Product[] = (response.data || []).map((p: any) => ({
-        id: p.id.toString(),
+      const [productRes, categoryRes] = await Promise.all([
+        productService.getCashierProducts(),
+        productService.getCashierCategories(),
+      ]);
+      
+      const productsData = Array.isArray(productRes.data) 
+        ? productRes.data 
+        : (productRes.data?.data || []);
+        
+      const categoriesData = categoryRes.data?.data || categoryRes.data || [];
+      
+      const transformedProducts: Product[] = productsData.map((p: any) => ({
+        id: String(p.id),
         name: p.name,
         price: typeof p.price === 'string' ? parseFloat(p.price) : p.price,
         stock: p.stock,
-        image: p.image_url || null,
-        category: p.category?.name || '',
+        image: p.image || null,
+        category: p.category,
       }));
       
       setProducts(transformedProducts);
-      console.log('✅ Products loaded:', transformedProducts.length);
+      setCategories(categoriesData);
     } catch (err: any) {
-      console.error('❌ Error fetching products:', err);
+      console.error('❌ Error fetching data:', err);
       setError(`Error: ${err.message}`);
     } finally {
       setProductsLoading(false);
@@ -97,7 +106,6 @@ export function CashierPage() {
   const handleAddToCart = (product: Product) => {
     if (product.stock === 0) return;
     addToCart(product);
-    console.log('✅ Added to cart:', product.name);
   };
 
   const handleUpdateQuantity = (productId: string, quantity: number) => {
@@ -109,15 +117,8 @@ export function CashierPage() {
   };
 
   const handleCompleteOrder = (paymentMethod: PaymentMethod) => {
-    console.log('🔵 [handleCompleteOrder] Called with method:', paymentMethod);
-    console.log('🔵 [handleCompleteOrder] Cart length:', cart.length);
-    
-    if (cart.length === 0) {
-      console.log('❌ [handleCompleteOrder] Cart is empty, returning');
-      return;
-    }
+    if (cart.length === 0) return;
 
-    // Generate receipt
     const now = new Date();
     const invoiceNumber = `INV-${now.getFullYear()}${(now.getMonth() + 1)
       .toString()
@@ -145,17 +146,10 @@ export function CashierPage() {
       change: 0,
     };
 
-    console.log('✅ [handleCompleteOrder] Receipt created:', newReceipt);
-    
-    // Show receipt
     setReceipt(newReceipt);
-    console.log('✅ [handleCompleteOrder] Receipt set, isReceiptOpen will be true');
-    
     setIsReceiptOpen(true);
-    console.log('✅ [handleCompleteOrder] isReceiptOpen set to true');
-    
-    // Clear cart
     clearCart();
+    setSelectedCategory('all');
   };
 
   const handleCloseReceipt = () => {
@@ -163,161 +157,92 @@ export function CashierPage() {
     setReceipt(null);
   };
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0,
-    }).format(price);
-  };
+  const filteredProducts = selectedCategory === 'all'
+    ? products
+    : products.filter((p) => {
+        const categoryId = typeof p.category === 'object' && p.category?.id 
+          ? String(p.category.id) 
+          : p.category;
+        return String(categoryId) === selectedCategory;
+      });
 
-  // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-orange-100">
+      <div className="min-h-screen flex items-center justify-center bg-coffee-50">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-orange-600 border-t-transparent mx-auto mb-4"></div>
-          <p className="text-orange-600 text-lg font-semibold">Loading...</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-coffee-600 border-t-transparent mx-auto mb-4"></div>
+          <p className="text-coffee-600 text-lg font-semibold">Loading...</p>
         </div>
       </div>
     );
   }
 
-  // Error state
   if (error && error.includes('Akses ditolak')) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-orange-100">
-        <Card className="max-w-md p-6">
-          <div className="text-center">
-            <p className="text-red-600 font-semibold text-lg mb-4">❌ {error}</p>
-            <p className="text-gray-600">Redirecting...</p>
-          </div>
-        </Card>
+      <div className="min-h-screen flex items-center justify-center bg-coffee-50">
+        <div className="bg-white rounded-lg shadow p-6">
+          <p className="text-red-600 font-semibold text-lg mb-4">❌ {error}</p>
+          <p className="text-coffee-700">Redirecting...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100">
-      {/* Header */}
-      <header className="bg-gradient-to-r from-orange-600 to-orange-700 shadow-2xl sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-3">
-              <div className="text-4xl">☕</div>
-              <div>
-                <h1 className="text-3xl font-bold text-white">Bean Coffee POS</h1>
-                <p className="text-orange-100 text-sm">Cashier System</p>
+    <>
+      <CashierLayout
+        sidebar={
+          <Sidebar
+            categories={categories}
+            selectedCategory={selectedCategory}
+            onSelectCategory={setSelectedCategory}
+            user={user}
+            onLogout={handleLogout}
+            isCollapsed={sidebarCollapsed}
+            onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
+          />
+        }
+        header={
+          <div className="bg-gradient-to-r from-coffee-700 to-coffee-800 text-white px-6 py-4 shadow-lg">
+            <div className="flex justify-between items-center">
+              <div className="flex items-center space-x-3">
+                <img src="/images/logo.png" alt="Logo" className="w-10 h-10" />
+                <h1 className="text-2xl font-bold">Bean Coffee POS</h1>
+              </div>
+              <div className="flex items-center space-x-3">
+                <span className="text-sm">{user?.name}</span>
+                <Button
+                  onClick={handleLogout}
+                  variant="destructive"
+                  size="sm"
+                  className="bg-red-500 hover:bg-red-600"
+                >
+                  Logout
+                </Button>
               </div>
             </div>
-            <div className="flex items-center space-x-4">
-              <div className="text-right hidden sm:block">
-                <p className="text-white font-semibold">{user?.name}</p>
-                <p className="text-orange-100 text-sm">{user?.email}</p>
-              </div>
-              <Button
-                onClick={handleLogout}
-                variant="destructive"
-                className="bg-red-600 hover:bg-red-700"
-              >
-                🚪 Logout
-              </Button>
-            </div>
           </div>
-        </div>
-      </header>
+        }
+        main={
+          <ProductGrid
+            products={filteredProducts}
+            isLoading={productsLoading}
+            onAddToCart={handleAddToCart}
+          />
+        }
+      />
 
-      {/* Error Message */}
-      {error && !error.includes('Akses ditolak') && (
-        <div className="container mx-auto px-4 pt-4">
-          <div className="bg-red-50 border-l-4 border-red-600 text-red-700 px-4 py-3 rounded">
-            ⚠️ {error}
-          </div>
-        </div>
-      )}
-
-      {/* Main Content */}
-      <main className="container mx-auto px-4 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Products Grid - 2 columns */}
-          <div className="lg:col-span-2">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  <span>📦 Products</span>
-                  {productsLoading && (
-                    <span className="text-sm font-normal text-orange-600">
-                      Loading...
-                    </span>
-                  )}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ProductGrid
-                  products={products}
-                  isLoading={productsLoading}
-                  onAddToCart={handleAddToCart}
-                />
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Cart & Payment - 1 column */}
-          <div className="lg:col-span-1">
-            <Card className="sticky top-24">
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  <span>🛒 Cart</span>
-                  <span className="bg-orange-600 text-white px-3 py-1 rounded-full text-sm">
-                    {cart.length}
-                  </span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {/* Cart Items */}
-                <div className="max-h-64 overflow-y-auto">
-                  <CartItems
-                    items={cart}
-                    onUpdateQuantity={handleUpdateQuantity}
-                    onRemoveItem={handleRemoveItem}
-                  />
-                </div>
-
-                <Separator />
-
-                {/* Totals */}
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Subtotal</span>
-                    <span className="font-semibold">{formatPrice(getSubtotal())}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Tax (10%)</span>
-                    <span className="font-semibold">{formatPrice(getTax())}</span>
-                  </div>
-                  <Separator />
-                  <div className="flex justify-between text-lg font-bold">
-                    <span>Total</span>
-                    <span className="text-orange-600">{formatPrice(getTotal())}</span>
-                  </div>
-                </div>
-
-                <Separator />
-
-                {/* Payment Section */}
-                <PaymentSection
-                  subtotal={getSubtotal()}
-                  tax={getTax()}
-                  total={getTotal()}
-                  onClearCart={clearCart}
-                  onCompleteOrder={handleCompleteOrder}
-                  disabled={cart.length === 0}
-                />
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </main>
+      {/* Floating Cart */}
+      <CartFloating
+        items={cart}
+        subtotal={getSubtotal()}
+        tax={getTax()}
+        total={getTotal()}
+        onUpdateQuantity={handleUpdateQuantity}
+        onRemove={handleRemoveItem}
+        onClearCart={clearCart}
+        onCompleteOrder={handleCompleteOrder}
+      />
 
       {/* Receipt Modal */}
       <ReceiptModal
@@ -325,6 +250,6 @@ export function CashierPage() {
         isOpen={isReceiptOpen}
         onClose={handleCloseReceipt}
       />
-    </div>
+    </>
   );
 }

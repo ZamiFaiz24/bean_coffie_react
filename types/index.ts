@@ -4,7 +4,14 @@ export interface Product {
   price: number;
   stock: number;
   image?: string | null;
-  category?: string;
+  category?: string | { id: number; name: string }; // ← support both!
+}
+
+export interface Category {
+  id: number;
+  name: string;
+  type?: string;
+  status?: boolean;
 }
 
 export interface CartItem {

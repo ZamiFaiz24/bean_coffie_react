@@ -1,72 +1,84 @@
-@import 'tailwindcss';
-@import 'tw-animate-css';
+@import "tailwindcss";
+@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
 :root {
   /* Coffee Color Palette */
-  --background: oklch(0.99 0.001 50);       /* Warm white/cream */
-  --foreground: oklch(0.23 0.01 40);        /* Deep brown */
-  --card: oklch(1 0 0);                     /* Pure white for cards */
-  --card-foreground: oklch(0.23 0.01 40);   /* Deep brown text */
-  --popover: oklch(1 0 0);                  /* White */
+  --background: oklch(0.99 0.001 50); /* Warm white/cream */
+  --foreground: oklch(0.23 0.01 40); /* Deep brown */
+  --card: oklch(1 0 0); /* Pure white for cards */
+  --card-foreground: oklch(0.23 0.01 40); /* Deep brown text */
+  --popover: oklch(1 0 0); /* White */
   --popover-foreground: oklch(0.23 0.01 40);
-  --primary: oklch(0.45 0.08 42);           /* Coffee brown */
+  --primary: oklch(0.45 0.08 42); /* Coffee brown */
   --primary-foreground: oklch(0.99 0.001 50);
-  --secondary: oklch(0.75 0.03 50);         /* Light tan */
+  --secondary: oklch(0.75 0.03 50); /* Light tan */
   --secondary-foreground: oklch(0.23 0.01 40);
-  --muted: oklch(0.88 0.01 50);             /* Soft tan */
-  --muted-foreground: oklch(0.45 0.01 40);  /* Medium brown */
-  --accent: oklch(0.55 0.1 45);             /* Warm coffee accent */
+  --muted: oklch(0.88 0.01 50); /* Soft tan */
+  --muted-foreground: oklch(0.45 0.01 40); /* Medium brown */
+  --accent: oklch(0.55 0.1 45); /* Warm coffee accent */
   --accent-foreground: oklch(0.99 0.001 50);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.99 0.001 50);
-  --border: oklch(0.93 0.005 45);           /* Light tan border */
-  --input: oklch(0.97 0.002 50);            /* Very light tan */
-  --ring: oklch(0.45 0.08 42);              /* Coffee brown ring */
-  --chart-1: oklch(0.45 0.08 42);           /* Coffee brown */
-  --chart-2: oklch(0.65 0.06 40);           /* Medium coffee */
-  --chart-3: oklch(0.75 0.03 50);           /* Light tan */
-  --chart-4: oklch(0.35 0.07 40);           /* Dark coffee */
-  --chart-5: oklch(0.55 0.09 45);           /* Warm coffee */
+  --border: oklch(0.93 0.005 45); /* Light tan border */
+  --input: oklch(0.97 0.002 50); /* Very light tan */
+  --ring: oklch(0.45 0.08 42); /* Coffee brown ring */
+  --chart-1: oklch(0.45 0.08 42); /* Coffee brown */
+  --chart-2: oklch(0.65 0.06 40); /* Medium coffee */
+  --chart-3: oklch(0.75 0.03 50); /* Light tan */
+  --chart-4: oklch(0.35 0.07 40); /* Dark coffee */
+  --chart-5: oklch(0.55 0.09 45); /* Warm coffee */
   --radius: 0.625rem;
-  --sidebar: oklch(0.25 0.01 40);           /* Deep brown sidebar */
+  --sidebar: oklch(0.25 0.01 40); /* Deep brown sidebar */
   --sidebar-foreground: oklch(0.99 0.001 50);
-  --sidebar-primary: oklch(0.55 0.1 45);    /* Warm coffee */
+  --sidebar-primary: oklch(0.55 0.1 45); /* Warm coffee */
   --sidebar-primary-foreground: oklch(0.99 0.001 50);
-  --sidebar-accent: oklch(0.75 0.03 50);    /* Light tan accent */
+  --sidebar-accent: oklch(0.75 0.03 50); /* Light tan accent */
   --sidebar-accent-foreground: oklch(0.23 0.01 40);
   --sidebar-border: oklch(0.35 0.01 40);
   --sidebar-ring: oklch(0.55 0.1 45);
+
+  /* Coffee Custom Colors */
+  --coffee-50: #fdfbf7;
+  --coffee-100: #f5e6d3;
+  --coffee-200: #ecdcc8;
+  --coffee-300: #e8d4c4;
+  --coffee-400: #d4a574;
+  --coffee-500: #c9935c;
+  --coffee-600: #a0826d;
+  --coffee-700: #8b6f47;
+  --coffee-800: #6b5635;
+  --coffee-900: #4a3a24;
 }
 
 .dark {
   /* Dark Coffee Theme */
-  --background: oklch(0.18 0.01 40);        /* Very dark brown */
-  --foreground: oklch(0.93 0.002 50);       /* Light tan text */
-  --card: oklch(0.23 0.01 40);              /* Dark brown cards */
+  --background: oklch(0.18 0.01 40); /* Very dark brown */
+  --foreground: oklch(0.93 0.002 50); /* Light tan text */
+  --card: oklch(0.23 0.01 40); /* Dark brown cards */
   --card-foreground: oklch(0.93 0.002 50);
   --popover: oklch(0.23 0.01 40);
   --popover-foreground: oklch(0.93 0.002 50);
-  --primary: oklch(0.55 0.1 45);            /* Warm coffee */
+  --primary: oklch(0.55 0.1 45); /* Warm coffee */
   --primary-foreground: oklch(0.18 0.01 40);
-  --secondary: oklch(0.35 0.07 40);         /* Dark coffee */
+  --secondary: oklch(0.35 0.07 40); /* Dark coffee */
   --secondary-foreground: oklch(0.93 0.002 50);
-  --muted: oklch(0.35 0.05 42);             /* Medium dark brown */
-  --muted-foreground: oklch(0.65 0.03 45);  /* Medium tan */
-  --accent: oklch(0.65 0.08 48);            /* Light warm brown */
+  --muted: oklch(0.35 0.05 42); /* Medium dark brown */
+  --muted-foreground: oklch(0.65 0.03 45); /* Medium tan */
+  --accent: oklch(0.65 0.08 48); /* Light warm brown */
   --accent-foreground: oklch(0.18 0.01 40);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.93 0.002 50);
-  --border: oklch(0.32 0.01 40);            /* Dark brown border */
-  --input: oklch(0.27 0.01 40);             /* Input dark brown */
-  --ring: oklch(0.55 0.1 45);               /* Warm coffee ring */
+  --border: oklch(0.32 0.01 40); /* Dark brown border */
+  --input: oklch(0.27 0.01 40); /* Input dark brown */
+  --ring: oklch(0.55 0.1 45); /* Warm coffee ring */
   --chart-1: oklch(0.55 0.1 45);
   --chart-2: oklch(0.65 0.08 48);
   --chart-3: oklch(0.75 0.03 50);
   --chart-4: oklch(0.35 0.07 40);
   --chart-5: oklch(0.45 0.08 42);
-  --sidebar: oklch(0.2 0.01 40);            /* Very dark sidebar */
+  --sidebar: oklch(0.2 0.01 40); /* Very dark sidebar */
   --sidebar-foreground: oklch(0.93 0.002 50);
   --sidebar-primary: oklch(0.55 0.1 45);
   --sidebar-primary-foreground: oklch(0.18 0.01 40);
@@ -77,8 +89,8 @@
 }
 
 @theme inline {
-  --font-sans: 'Geist', 'Geist Fallback';
-  --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+  --font-sans: "Geist", "Geist Fallback";
+  --font-mono: "Geist Mono", "Geist Mono Fallback";
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -115,6 +127,18 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Coffee Custom Colors */
+  --color-coffee-50: var(--coffee-50);
+  --color-coffee-100: var(--coffee-100);
+  --color-coffee-200: var(--coffee-200);
+  --color-coffee-300: var(--coffee-300);
+  --color-coffee-400: var(--coffee-400);
+  --color-coffee-500: var(--coffee-500);
+  --color-coffee-600: var(--coffee-600);
+  --color-coffee-700: var(--coffee-700);
+  --color-coffee-800: var(--coffee-800);
+  --color-coffee-900: var(--coffee-900);
 }
 
 @layer base {

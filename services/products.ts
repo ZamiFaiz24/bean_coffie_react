@@ -20,7 +20,8 @@ export interface Product {
 export interface Category {
   id: number;
   name: string;
-  description?: string;
+  type?: string;
+  status?: boolean;
 }
 
 export interface ProductResponse {
@@ -28,15 +29,17 @@ export interface ProductResponse {
   status?: string;
 }
 
+export interface CategoryResponse {
+  success: boolean;
+  data: Category[];
+}
+
 export const productService = {
   async getCashierProducts() {
     try {
-      const endpoint = '/cashier/products'; 
+      const endpoint = '/products'; 
       
       console.log('🟢 [ProductService] Starting getCashierProducts');
-      console.log('🟢 [ProductService] Endpoint:', endpoint);
-      console.log('🟢 [ProductService] API Base URL:', apiClient.defaults.baseURL);
-      
       const response = await apiClient.get<ProductResponse>(endpoint);
       
       console.log('✅ [ProductService] Success! Received data:', {
@@ -46,15 +49,26 @@ export const productService = {
       
       return response.data;
     } catch (error: any) {
-      console.error('❌ [ProductService] ERROR:', {
-        errorMessage: error.message,
-        errorCode: error.code,
-        responseStatus: error.response?.status,
-        responseURL: error.response?.config?.url,
-        requestedEndpoint: '/cashier/products',
-        config: error.config,
-        fullError: error,
+      console.error('❌ [ProductService] ERROR:', error.message);
+      throw error;
+    }
+  },
+
+  async getCashierCategories() {
+    try {
+      const endpoint = '/categories';
+      
+      console.log('🟢 [ProductService] Starting getCashierCategories');
+      const response = await apiClient.get<CategoryResponse>(endpoint);
+      
+      console.log('✅ [ProductService] Categories loaded:', {
+        count: response.data?.data?.length,
+        data: response.data?.data,
       });
+      
+      return response.data;
+    } catch (error: any) {
+      console.error('❌ [ProductService] ERROR:', error.message);
       throw error;
     }
   },
