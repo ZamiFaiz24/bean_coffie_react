@@ -1,17 +1,16 @@
 export interface Product {
-  id: string;
+  id: number;  // pastikan number, bukan string
   name: string;
-  price: number;
+  price: string;
   stock: number;
-  image?: string | null;
-  category?: string | { id: number; name: string }; // ← support both!
+  image: string | null;
+  is_active: number | null;
+  category: Category;
 }
 
 export interface Category {
   id: number;
   name: string;
-  type?: string;
-  status?: boolean;
 }
 
 export interface CartItem {
