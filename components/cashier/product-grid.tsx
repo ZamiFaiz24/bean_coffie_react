@@ -61,9 +61,9 @@ export function ProductGrid({
               >
                 <CardContent className="p-4 space-y-3">
                   <div className="w-full h-40 bg-coffee-100 rounded-lg overflow-hidden flex items-center justify-center">
-                    {product.image ? (
+                    {product.image_url ? (
                       <img
-                        src={product.image}
+                        src={product.image_url}
                         alt={product.name}
                         className="w-full h-full object-cover"
                         onError={(e) => {

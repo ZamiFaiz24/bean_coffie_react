@@ -3,8 +3,9 @@ export interface Product {
   name: string;
   price: string;
   stock: number;
-  image: string | null;
+  image_url: string | null;
   is_active: number | null;
+  category_id?: number;
   category: Category;
 }
 

@@ -4,25 +4,33 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Plus, Edit2, Trash2 } from 'lucide-react';
-import { Product } from '@/types';
+import { Product, Category } from '@/types';
 import apiClient from '@/lib/api';
+import { ProductFormModal } from './product-form-modal';
 
 export function ProductsManagement() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
+  const [formMode, setFormMode] = useState<'create' | 'edit'>('create');
   const [editingId, setEditingId] = useState<number | null>(null);
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   useEffect(() => {
-    fetchProducts();
+    fetchData();
   }, []);
 
-  const fetchProducts = async () => {
+  const fetchData = async () => {
     try {
       setLoading(true);
-      const response = await apiClient.get('/products');
-      setProducts(response.data.data || []);
+      const [productsRes, categoriesRes] = await Promise.all([
+        apiClient.get('/products'),
+        apiClient.get('/categories'),
+      ]);
+      setProducts(productsRes.data.data || []);
+      setCategories(categoriesRes.data.data || []);
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
     }
@@ -41,6 +49,22 @@ export function ProductsManagement() {
     }
   };
 
+  const handleAddClick = () => {
+    setFormMode('create');
+    setEditingId(null);
+    setIsFormOpen(true);
+  };
+
+  const handleEditClick = (id: number) => {
+    setFormMode('edit');
+    setEditingId(id);
+    setIsFormOpen(true);
+  };
+
+  const handleSave = () => {
+    fetchData(); // Refresh list setelah save
+  };
+
   if (loading) {
     return <div className="text-center py-12">Loading...</div>;
   }
@@ -49,7 +73,10 @@ export function ProductsManagement() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-3xl font-bold">Products Management</h2>
-        <Button className="gap-2">
+        <Button
+          className="gap-2 bg-coffee-700 hover:bg-coffee-800"
+          onClick={handleAddClick}
+        >
           <Plus className="w-4 h-4" />
           Add Product
         </Button>
@@ -77,9 +104,9 @@ export function ProductsManagement() {
                   <tr key={product.id} className="border-b hover:bg-muted/50">
                     <td className="py-3 px-4">{product.id}</td>
                     <td className="py-3 px-4">
-                      {product.image ? (
+                      {product.image_url ? (
                         <img
-                          src={product.image}
+                          src={product.image_url}
                           alt={product.name}
                           className="w-10 h-10 rounded object-cover"
                         />
@@ -90,7 +117,7 @@ export function ProductsManagement() {
                       )}
                     </td>
                     <td className="py-3 px-4 font-medium">{product.name}</td>
-                    <td className="py-3 px-4">Rp {product.price.toLocaleString()}</td>
+                    <td className="py-3 px-4">Rp {Number(product.price).toLocaleString()}</td>
                     <td className="py-3 px-4">{product.stock}</td>
                     <td className="py-3 px-4">
                       <div className="flex gap-2">
@@ -98,7 +125,7 @@ export function ProductsManagement() {
                           size="sm"
                           variant="outline"
                           className="gap-1"
-                          onClick={() => setEditingId(product.id)}
+                          onClick={() => handleEditClick(product.id)}
                         >
                           <Edit2 className="w-4 h-4" />
                           Edit
@@ -121,6 +148,16 @@ export function ProductsManagement() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Form Modal - untuk Create & Edit */}
+      <ProductFormModal
+        mode={formMode}
+        productId={editingId}
+        isOpen={isFormOpen}
+        onClose={() => setIsFormOpen(false)}
+        onSave={handleSave}
+        categories={categories}
+      />
     </div>
   );
 }
