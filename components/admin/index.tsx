@@ -1,109 +1,21 @@
 'use client';
 
 import { useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { SidebarNav } from './sidebar-nav';
 import { SummaryCards } from './summary-cards';
 import { TopProducts } from './top-products';
 import { LowStockAlerts } from './low-stock-alerts';
 import { RecentTransactions } from './recent-transactions';
-import { SummaryCard, TopProduct, LowStockProduct, Transaction } from '@/types';
-import { DollarSign, ShoppingCart, Package, AlertCircle } from 'lucide-react';
 import { ProductsManagement } from './products-management';
-
-const mockSummaryCards: SummaryCard[] = [
-  {
-    title: "Today's Revenue",
-    value: 'Rp 4.850.000',
-    subtitle: 'Total sales today',
-    icon: <DollarSign className="w-8 h-8 text-amber-600" />,
-    trend: 12,
-  },
-  {
-    title: 'Total Orders Today',
-    value: '42',
-    subtitle: 'Number of transactions',
-    icon: <ShoppingCart className="w-8 h-8 text-blue-600" />,
-    trend: 8,
-  },
-  {
-    title: 'Total Products',
-    value: '24',
-    subtitle: 'Items in inventory',
-    icon: <Package className="w-8 h-8 text-green-600" />,
-    trend: 0,
-  },
-  {
-    title: 'Low Stock Items',
-    value: '5',
-    subtitle: 'Items need restocking',
-    icon: <AlertCircle className="w-8 h-8 text-red-600" />,
-    trend: -2,
-  },
-];
-
-const mockTopProducts: TopProduct[] = [
-  { id: 1, name: 'Espresso', sold: 38, revenue: 1900000, rank: 1 },
-  { id: 2, name: 'Latte', sold: 35, revenue: 1750000, rank: 2 },
-  { id: 3, name: 'Cappuccino', sold: 28, revenue: 1400000, rank: 3 },
-  { id: 4, name: 'Iced Americano', sold: 24, revenue: 1200000, rank: 4 },
-  { id: 5, name: 'Croissant', sold: 22, revenue: 550000, rank: 5 },
-];
-
-const mockLowStockProducts: LowStockProduct[] = [
-  { id: 1, name: 'Caramel Syrup', stock: 0, status: 'out' },
-  { id: 2, name: 'Vanilla Beans', stock: 2, status: 'low' },
-  { id: 3, name: 'Chocolate Powder', stock: 1, status: 'low' },
-  { id: 4, name: 'Milk Foam', stock: 3, status: 'low' },
-];
-
-const mockTransactions: Transaction[] = [
-  {
-    id: '1',
-    invoiceNumber: 'INV-20240127-001',
-    cashierName: 'Budi',
-    amount: 185000,
-    status: 'paid',
-    dateTime: '2024-01-27 09:30:00',
-  },
-  {
-    id: '2',
-    invoiceNumber: 'INV-20240127-002',
-    cashierName: 'Siti',
-    amount: 245000,
-    status: 'paid',
-    dateTime: '2024-01-27 09:45:00',
-  },
-  {
-    id: '3',
-    invoiceNumber: 'INV-20240127-003',
-    cashierName: 'Ahmad',
-    amount: 125000,
-    status: 'paid',
-    dateTime: '2024-01-27 10:15:00',
-  },
-  {
-    id: '4',
-    invoiceNumber: 'INV-20240127-004',
-    cashierName: 'Dewi',
-    amount: 305000,
-    status: 'paid',
-    dateTime: '2024-01-27 10:30:00',
-  },
-  {
-    id: '5',
-    invoiceNumber: 'INV-20240127-005',
-    cashierName: 'Roni',
-    amount: 165000,
-    status: 'paid',
-    dateTime: '2024-01-27 10:45:00',
-  },
-];
+import { useAdminDashboard } from '@/hooks/useAdminDashboard';
 
 export function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('overview');
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { summaryCardsData, topProducts, lowStockProducts, transactions, loading, error } =
+    useAdminDashboard();
 
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50">
@@ -161,14 +73,26 @@ export function AdminDashboard() {
                   <p className="text-gray-600 mt-1">Welcome back to BeanStock Admin Panel</p>
                 </div>
 
-                <SummaryCards cards={mockSummaryCards} />
+                {error && (
+                  <div className="p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+                    {error}
+                  </div>
+                )}
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <TopProducts products={mockTopProducts} />
-                  <LowStockAlerts products={mockLowStockProducts} />
-                </div>
+                {loading ? (
+                  <div className="text-center py-12">Loading dashboard...</div>
+                ) : (
+                  <>
+                    <SummaryCards cards={summaryCardsData} />
 
-                <RecentTransactions transactions={mockTransactions} />
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                      <TopProducts products={topProducts} />
+                      <LowStockAlerts products={lowStockProducts} />
+                    </div>
+
+                    <RecentTransactions transactions={transactions} />
+                  </>
+                )}
               </>
             )}
 
@@ -179,14 +103,22 @@ export function AdminDashboard() {
             {activeTab === 'low-stock' && (
               <>
                 <h2 className="text-3xl font-bold text-gray-800">Low Stock Management</h2>
-                <LowStockAlerts products={mockLowStockProducts} />
+                {loading ? (
+                  <div className="text-center py-12">Loading...</div>
+                ) : (
+                  <LowStockAlerts products={lowStockProducts} />
+                )}
               </>
             )}
 
             {activeTab === 'top-sales' && (
               <>
                 <h2 className="text-3xl font-bold text-gray-800">Top Sales Report</h2>
-                <TopProducts products={mockTopProducts} />
+                {loading ? (
+                  <div className="text-center py-12">Loading...</div>
+                ) : (
+                  <TopProducts products={topProducts} />
+                )}
               </>
             )}
 

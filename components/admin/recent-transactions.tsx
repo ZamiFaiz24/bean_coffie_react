@@ -17,19 +17,28 @@ export function RecentTransactions({ transactions }: RecentTransactionsProps) {
       <CardContent>
         <div className="space-y-3">
           {transactions.map((transaction) => (
-            <div key={transaction.id} className="flex items-center justify-between p-3 border rounded-lg">
+            <div
+              key={transaction.id}
+              className="flex items-center justify-between p-3 border rounded-lg"
+            >
               <div>
-                <p className="font-semibold">{transaction.invoiceNumber}</p>
-                <p className="text-sm text-muted-foreground">{transaction.cashierName}</p>
-                <p className="text-xs text-muted-foreground">{transaction.dateTime}</p>
+                <p className="font-medium">{transaction.invoiceNumber}</p>
+                <p className="text-sm text-muted-foreground">
+                  Cashier: {transaction.cashierName || '-'}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Customer: {transaction.customerName || '-'}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {new Date(transaction.dateTime).toLocaleString('id-ID')}
+                </p>
               </div>
-              <div className="flex items-center gap-2">
-                <div className="text-right">
-                  <p className="font-bold text-primary">Rp {transaction.amount.toLocaleString()}</p>
-                </div>
-                <Badge variant={transaction.status === 'paid' ? 'default' : 'destructive'}>
-                  {transaction.status}
-                </Badge>
+
+              <div className="text-right">
+                <p className="font-semibold">
+                  Rp {Number(transaction.amount).toLocaleString('id-ID')}
+                </p>
+                <p className="text-sm capitalize">{transaction.status}</p>
               </div>
             </div>
           ))}

@@ -1,5 +1,5 @@
 export interface Product {
-  id: number;  // pastikan number, bukan string
+  id: number; // pastikan number, bukan string
   name: string;
   price: string;
   stock: number;
@@ -48,10 +48,10 @@ export interface TransactionPayload {
 
 export interface SummaryCard {
   title: string;
-  value: string | number;
+  value: string;
   subtitle: string;
-  icon: React.ReactNode;
-  trend?: number;
+  icon: React.ReactNode; // Tambahkan ini
+  trend: number;
 }
 
 export interface TopProduct {
@@ -66,14 +66,15 @@ export interface LowStockProduct {
   id: number;
   name: string;
   stock: number;
-  status: 'out' | 'low';
+  status: 'low' | 'out';
 }
 
 export interface Transaction {
   id: string;
   invoiceNumber: string;
   cashierName: string;
+  customerName?: string; // new
   amount: number;
-  status: 'paid' | 'cancelled';
+  status: string;
   dateTime: string;
 }
