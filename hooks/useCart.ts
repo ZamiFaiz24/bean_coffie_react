@@ -1,109 +1,66 @@
+'use client';
+
 import { useState, useCallback } from 'react';
-import { CartItem, Product } from '@/types';
+import { CartItem } from '@/types';
 
-interface UseCartReturn {
-  cart: CartItem[];
-  addToCart: (product: Product) => void;
-  removeFromCart: (productId: string | number) => void; // ← ubah jadi string | number
-  updateQuantity: (productId: string | number, quantity: number) => void; // ← ubah jadi string | number
-  clearCart: () => void;
-  getTotal: () => number;
-  getSubtotal: () => number;
-  getTax: () => number;
-  cartCount: number;
-}
-
-export const useCart = (): UseCartReturn => {
+export function useCart() {
   const [cart, setCart] = useState<CartItem[]>([]);
 
-  const addToCart = useCallback((product: Product) => {
+  const addToCart = useCallback((product: any) => {
+    console.log('✅ [useCart] Adding to cart:', product.id);
     setCart((prevCart) => {
-      const existingItem = prevCart.find((item) => item.product_id === product.id);
-
+      const existingItem = prevCart.find(item => String(item.id) === String(product.id));
+      
       if (existingItem) {
-        return prevCart.map((item) =>
-          item.product_id === product.id
-            ? {
-                ...item,
-                quantity: item.quantity + 1,
-                subtotal: (item.quantity + 1) * item.price,
-              }
+        console.log('✅ [useCart] Item exists, updating quantity from', existingItem.quantity, 'to', existingItem.quantity + 1);
+        const newCart = prevCart.map(item =>
+          String(item.id) === String(product.id)
+            ? { ...item, quantity: item.quantity + 1 }
             : item
         );
-      } else {
-        const newItem: CartItem = {
-          id: Date.now(),
-          product_id: product.id,
-          name: product.name,
-          price: product.price,
-          quantity: 1,
-          subtotal: product.price,
-          image: product.image,
-        };
-        return [...prevCart, newItem];
+        console.log('✅ [useCart] New cart after add:', newCart);
+        return newCart;
       }
+      
+      console.log('✅ [useCart] Adding new item to cart');
+      return [...prevCart, { ...product, quantity: 1 }];
     });
-
-    console.log('✅ [Cart] Product added:', product.name);
   }, []);
 
-  const removeFromCart = useCallback((productId: string | number) => {
+  const updateQuantity = useCallback((productId: string, quantity: number) => {
+    console.log('✅ [useCart] updateQuantity called:', productId, 'qty:', quantity);
     setCart((prevCart) => {
-      const item = prevCart.find((item) => item.product_id === String(productId));
-      console.log('🗑️ [Cart] Product removed:', item?.name);
-      return prevCart.filter((item) => item.product_id !== String(productId));
+      const newCart = prevCart.map(item =>
+        String(item.id) === String(productId) 
+          ? { ...item, quantity } 
+          : item
+      );
+      console.log('✅ [useCart] Updated cart:', newCart);
+      return newCart;
     });
   }, []);
 
-  const updateQuantity = useCallback((productId: string | number, quantity: number) => {
-    if (quantity <= 0) {
-      removeFromCart(productId);
-      return;
-    }
-
-    setCart((prevCart) =>
-      prevCart.map((item) =>
-        item.product_id === String(productId)
-          ? {
-              ...item,
-              quantity,
-              subtotal: quantity * item.price,
-            }
-          : item
-      )
-    );
-
-    console.log('✏️ [Cart] Quantity updated for product:', productId, 'qty:', quantity);
-  }, [removeFromCart]);
+  const removeFromCart = useCallback((productId: string) => {
+    console.log('✅ [useCart] removeFromCart called:', productId);
+    setCart((prevCart) => {
+      const newCart = prevCart.filter(item => String(item.id) !== String(productId));
+      console.log('✅ [useCart] Removed item, new cart:', newCart);
+      return newCart;
+    });
+  }, []);
 
   const clearCart = useCallback(() => {
+    console.log('✅ [useCart] clearCart called');
     setCart([]);
-    console.log('🧹 [Cart] Cart cleared');
   }, []);
 
-  const getSubtotal = useCallback(() => {
-    return cart.reduce((total, item) => total + item.subtotal, 0);
-  }, [cart]);
-
-  const getTax = useCallback(() => {
-    return getSubtotal() * 0.1;
-  }, [getSubtotal]);
-
-  const getTotal = useCallback(() => {
-    return getSubtotal() + getTax();
-  }, [getSubtotal, getTax]);
-
-  const cartCount = cart.length;
+  console.log('🛒 [useCart] Current cart state:', cart);
 
   return {
     cart,
     addToCart,
-    removeFromCart,
     updateQuantity,
+    removeFromCart,
     clearCart,
-    getTotal,
-    getSubtotal,
-    getTax,
-    cartCount,
   };
-};
+}

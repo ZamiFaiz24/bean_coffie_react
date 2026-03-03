@@ -4,16 +4,19 @@ import { Product } from '@/types';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Plus } from 'lucide-react';
 
 interface ProductGridProps {
   products: Product[];
   isLoading?: boolean;
+  cartItems?: any[];
   onAddToCart: (product: Product) => void;
 }
 
 export function ProductGrid({
   products,
   isLoading,
+  cartItems = [],
   onAddToCart,
 }: ProductGridProps) {
   const formatPrice = (price: string | number) => {
@@ -34,10 +37,22 @@ export function ProductGrid({
 
   const getImageUrl = (image: string | null | undefined): string | null => {
     if (!image) return null;
-    // Jika sudah full URL, return as is
     if (image.startsWith('http')) return image;
-    // Jika path lokal, tambahkan base URL API
     return `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/storage/${image}`;
+  };
+
+  // ✅ Check dengan product_id
+  const isProductInCart = (productId: string) => {
+    return cartItems.some(item => 
+      item.product_id === productId || item.id === productId
+    );
+  };
+
+  const getCartQuantity = (productId: string) => {
+    const item = cartItems.find(
+      item => item.product_id === productId || item.id === productId
+    );
+    return item?.quantity || 0;
   };
 
   return (
@@ -62,13 +77,16 @@ export function ProductGrid({
           {products.map((product) => {
             const categoryName = getCategoryName(product.category);
             const imageUrl = getImageUrl(product.image);
+            const inCart = isProductInCart(String(product.id));
+            const cartQty = getCartQuantity(String(product.id));
             
             return (
               <Card
                 key={product.id}
-                className="hover:shadow-lg transition-all hover:scale-105 cursor-pointer border-2 border-coffee-200 hover:border-coffee-400 bg-white"
+                className="hover:shadow-lg transition-all cursor-pointer border-2 border-coffee-200 hover:border-coffee-400 bg-white h-full flex flex-col"
               >
-                <CardContent className="p-4 space-y-3">
+                <CardContent className="p-4 space-y-3 flex-1 flex flex-col">
+                  {/* Image */}
                   <div className="w-full h-40 bg-coffee-100 rounded-lg overflow-hidden flex items-center justify-center">
                     {imageUrl ? (
                       <img
@@ -86,7 +104,8 @@ export function ProductGrid({
                     )}
                   </div>
 
-                  <div>
+                  {/* Content */}
+                  <div className="flex-1">
                     <p className="text-sm font-bold text-coffee-800 line-clamp-2 mb-1">
                       {product.name}
                     </p>
@@ -101,7 +120,7 @@ export function ProductGrid({
                       {formatPrice(product.price)}
                     </p>
 
-                    <div className="flex justify-between items-center mb-3">
+                    <div className="flex justify-between items-center">
                       <span className="text-xs text-coffee-600 font-semibold">Stock:</span>
                       <Badge
                         variant={product.stock > 10 ? 'default' : product.stock > 0 ? 'secondary' : 'destructive'}
@@ -112,13 +131,30 @@ export function ProductGrid({
                     </div>
                   </div>
 
+                  {/* Button - Only Color Difference */}
                   <Button
                     onClick={() => onAddToCart(product)}
                     disabled={product.stock === 0}
-                    className="w-full bg-coffee-600 hover:bg-coffee-700 disabled:opacity-50 text-white font-semibold"
+                    className={`w-full text-white font-semibold transition-all mt-2 ${
+                      inCart
+                        ? 'bg-green-500 hover:bg-green-600' // ✅ Hijau jika di cart
+                        : 'bg-coffee-600 hover:bg-coffee-700' // Coklat jika belum
+                    } disabled:opacity-50`}
                     size="sm"
                   >
-                    {product.stock === 0 ? '❌ Out of Stock' : '➕ Add to Cart'}
+                    {product.stock === 0 ? (
+                      '❌ Out of Stock'
+                    ) : inCart ? (
+                      <span className="flex items-center justify-center gap-2">
+                        <Plus className="w-4 h-4" />
+                        Add More
+                      </span>
+                    ) : (
+                      <span className="flex items-center justify-center gap-2">
+                        <Plus className="w-4 h-4" />
+                        Add to Cart
+                      </span>
+                    )}
                   </Button>
                 </CardContent>
               </Card>

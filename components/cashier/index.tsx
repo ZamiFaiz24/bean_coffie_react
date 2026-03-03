@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { Product, Category, Receipt, CartItem } from '@/types';
 import { authService } from '@/services/auth';
@@ -40,12 +40,10 @@ export function CashierPage() {
   const {
     cart,
     addToCart,
-    removeFromCart,
     updateQuantity,
+    removeFromCart,
     clearCart,
-    getTotal,
-    getSubtotal,
-    getTax,
+    // ✅ HAPUS: getTotal, getSubtotal, getTax
   } = useCart();
 
   // Check auth & fetch products
@@ -117,14 +115,17 @@ export function CashierPage() {
   };
 
   const handleUpdateQuantity = (productId: string, quantity: number) => {
-    if (quantity <= 0) {
-      removeFromCart(productId);
+    console.log('Handle Update quantity:', productId, quantity);
+    if (quantity < 1) {
+      handleRemoveItem(productId);
       return;
     }
+    // ✅ Pastikan call langsung ke hook function
     updateQuantity(productId, quantity);
   };
 
   const handleRemoveItem = (productId: string) => {
+    console.log('Handle Remove item:', productId);
     removeFromCart(productId);
   };
 
@@ -143,6 +144,14 @@ export function CashierPage() {
         quantity: item.quantity,
         price: item.price,
       }));
+
+      // ✅ Calculate sendiri di sini atau gunakan dari CartFloating
+      const subtotal = cart.reduce((sum, item) => {
+        const price = typeof item.price === 'string' ? parseFloat(item.price) : item.price;
+        return sum + (price * item.quantity);
+      }, 0);
+      const tax = subtotal * 0.1;
+      const total = subtotal + tax;
 
       const response = await transactionService.createTransaction({
         customer_name: customerName || 'Walk-in Customer',
@@ -164,12 +173,12 @@ export function CashierPage() {
         }),
         cashier: user?.name || 'Unknown',
         items: cart,
-        subtotal: getSubtotal(),
-        tax: getTax(),
-        total: getTotal(),
+        subtotal: subtotal, // ✅ Gunakan nilai yang baru dihitung
+        tax: tax,
+        total: total,
         payment_method: paymentMethod,
         paid_amount: paidAmount,
-        change: paidAmount - getTotal(),
+        change: paidAmount - total,
       };
 
       setReceipt(newReceipt);
@@ -193,16 +202,14 @@ export function CashierPage() {
   };
 
   // Filter products by category & search
-  const filteredProducts = products.filter(p => {
-    let categoryMatch = true;
-
-    if (selectedCategory !== 'all') {
-      categoryMatch = String(p.category?.id) === String(selectedCategory);
-    }
-
-    const searchMatch = p.name.toLowerCase().includes(searchQuery.toLowerCase());
-    return categoryMatch && searchMatch;
-  });
+  const filteredProducts = useMemo(() => {
+    return products.filter(product => {
+      const matchesCategory = selectedCategory === 'all' || product.category?.id === selectedCategory;
+      const matchesSearch = searchQuery === '' || 
+        product.name.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesCategory && matchesSearch;
+    });
+  }, [products, selectedCategory, searchQuery]);
 
   if (loading) {
     return (
@@ -288,22 +295,22 @@ export function CashierPage() {
           <ProductGrid
             products={filteredProducts}
             isLoading={productsLoading}
+            cartItems={cart}
             onAddToCart={handleAddToCart}
           />
         </div>
       </div>
 
       {/* Cart Floating */}
-      <CartFloating
-        items={cart}
-        subtotal={getSubtotal()}
-        tax={getTax()}
-        total={getTotal()}
-        onUpdateQuantity={handleUpdateQuantity}
-        onRemove={handleRemoveItem}
-        onClearCart={clearCart}
-        onCompleteOrder={handleCompleteOrder}
-      />
+      {cart.length > 0 && (
+        <CartFloating
+          items={cart} // ✅ Pastikan ini tetap ter-update
+          onUpdateQuantity={handleUpdateQuantity} // ✅ Pass handler yang benar
+          onRemove={handleRemoveItem} // ✅ Pass handler yang benar
+          onClearCart={clearCart}
+          onCompleteOrder={handleCompleteOrder}
+        />
+      )}
 
       {/* Receipt Modal */}
       {isReceiptOpen && receipt && (
