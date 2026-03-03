@@ -1,32 +1,48 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
+import { useSidebar } from '@/context/SidebarContext';
+import { Sidebar } from './sidebar';
 
 interface CashierLayoutProps {
-  sidebar: ReactNode;
-  main: ReactNode;
-  header: ReactNode;
+  children: ReactNode;
+  user?: any;
+  onLogout: () => void;
 }
 
-export function CashierLayout({ sidebar, main, header }: CashierLayoutProps) {
+export function CashierLayout({ children, user, onLogout }: CashierLayoutProps) {
+  const { isOpen, closeSidebar } = useSidebar();
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
   return (
-    <div className="flex h-screen bg-gray-50 overflow-hidden">
-      {/* Sidebar */}
-      <div className="flex-shrink-0 transition-all duration-300">
-        {sidebar}
+    <div className="flex h-screen bg-coffee-50">
+      {/* Sidebar - Mobile Overlay */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
+          onClick={closeSidebar}
+        />
+      )}
+
+      {/* Sidebar Component */}
+      <div
+        className={`fixed md:relative z-40 transition-all duration-300 ${
+          isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+        }`}
+      >
+        <Sidebar
+          user={user}
+          onLogout={onLogout}
+          isCollapsed={isCollapsed}
+          onToggle={() => setIsCollapsed(!isCollapsed)}
+        />
       </div>
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Header */}
-        <div className="flex-shrink-0">
-          {header}
-        </div>
-
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6">
-          {main}
-        </div>
+        <main className="flex-1 overflow-auto">
+          {children}
+        </main>
       </div>
     </div>
   );

@@ -32,6 +32,14 @@ export function ProductGrid({
     return '';
   };
 
+  const getImageUrl = (image: string | null | undefined): string | null => {
+    if (!image) return null;
+    // Jika sudah full URL, return as is
+    if (image.startsWith('http')) return image;
+    // Jika path lokal, tambahkan base URL API
+    return `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/storage/${image}`;
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
@@ -53,6 +61,7 @@ export function ProductGrid({
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {products.map((product) => {
             const categoryName = getCategoryName(product.category);
+            const imageUrl = getImageUrl(product.image);
             
             return (
               <Card
@@ -61,9 +70,9 @@ export function ProductGrid({
               >
                 <CardContent className="p-4 space-y-3">
                   <div className="w-full h-40 bg-coffee-100 rounded-lg overflow-hidden flex items-center justify-center">
-                    {product.image_url ? (
+                    {imageUrl ? (
                       <img
-                        src={product.image_url}
+                        src={imageUrl}
                         alt={product.name}
                         className="w-full h-full object-cover"
                         onError={(e) => {

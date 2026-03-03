@@ -1,12 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { CartItem, PaymentMethod } from '@/types';
+import { CartItem } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { CartItems } from './cart-items';
 import { PaymentSection } from './payment-section';
-import { Separator } from '@/components/ui/separator';
 import { X, ShoppingCart, Minus } from 'lucide-react';
 
 interface CartFloatingProps {
@@ -17,7 +16,7 @@ interface CartFloatingProps {
   onUpdateQuantity: (productId: string, quantity: number) => void;
   onRemove: (productId: string) => void;
   onClearCart: () => void;
-  onCompleteOrder: (paymentMethod: PaymentMethod) => void;
+  onCompleteOrder: (paymentMethod: 'cash' | 'card' | 'transfer', paidAmount: number, customerName?: string) => void; // ✅ Tambah customerName
 }
 
 export function CartFloating({
@@ -30,35 +29,18 @@ export function CartFloating({
   onClearCart,
   onCompleteOrder,
 }: CartFloatingProps) {
-  const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
 
-  // Auto open when items added
-  if (items.length > 0 && !isOpen && !isMinimized) {
-    setIsOpen(true);
-  }
-
   const toggleCart = () => {
-    if (isMinimized) {
-      setIsMinimized(false);
-      setIsOpen(true);
-    } else {
-      setIsOpen(!isOpen);
-    }
-  };
-
-  const minimizeCart = () => {
-    setIsMinimized(true);
-    setIsOpen(false);
+    setIsMinimized(!isMinimized);
   };
 
   const closeCart = () => {
-    setIsOpen(false);
     setIsMinimized(false);
   };
 
-  // Floating Cart Button (always visible when has items)
-  if (!isOpen && items.length > 0) {
+  // Floating Cart Button (always visible when has items and minimized)
+  if (isMinimized && items.length > 0) {
     return (
       <button
         onClick={toggleCart}
@@ -92,14 +74,16 @@ export function CartFloating({
           </div>
           <div className="flex items-center space-x-2">
             <button
-              onClick={minimizeCart}
+              onClick={toggleCart}
               className="hover:bg-coffee-500 rounded p-1 transition"
+              title="Minimize"
             >
               <Minus className="w-5 h-5" />
             </button>
             <button
               onClick={closeCart}
               className="hover:bg-coffee-500 rounded p-1 transition"
+              title="Close"
             >
               <X className="w-5 h-5" />
             </button>
@@ -111,7 +95,7 @@ export function CartFloating({
           <CartItems
             items={items}
             onUpdateQuantity={onUpdateQuantity}
-            onRemoveItem={onRemove}
+            onRemove={onRemove}
           />
         </div>
 
@@ -122,7 +106,7 @@ export function CartFloating({
             tax={tax}
             total={total}
             onClearCart={onClearCart}
-            onCompleteOrder={onCompleteOrder}
+            onCompleteOrder={onCompleteOrder} // ✅ Sekarang menerima customerName juga
             disabled={items.length === 0}
           />
         </div>

@@ -9,12 +9,13 @@ export interface TransactionItem {
 
 export interface Transaction {
   id: number;
-  transaction_number: string;
+  invoice_number: string; // ✅ Ubah dari transaction_number ke invoice_number
+  customer_name?: string; // ✅ Tambah field ini
   items: TransactionItem[];
   subtotal: number;
   tax: number;
   total: number;
-  payment_method: 'cash' | 'qris' | 'debit';
+  payment_method: 'cash' | 'qris' | 'debit' | 'card' | 'transfer'; // ✅ Tambah opsi
   paid_amount: number;
   change?: number;
   status: 'completed' | 'pending' | 'cancelled';
@@ -24,12 +25,13 @@ export interface Transaction {
 }
 
 export interface CreateTransactionPayload {
+  customer_name?: string; // ✅ Tambah field ini
   items: Array<{
     product_id: number;
     quantity: number;
     price: number;
   }>;
-  payment_method: 'cash' | 'qris' | 'debit';
+  payment_method: 'cash' | 'qris' | 'debit' | 'card' | 'transfer';
   paid_amount: number;
 }
 
@@ -57,12 +59,12 @@ export const transactionService = {
       const response = await apiClient.post<TransactionResponse>('/transactions', data);
       return response.data;
     } catch (error) {
-      console.error('Error creating transaction:', error);
+      console.error('❌ Error creating transaction:', error);
       throw error;
     }
   },
 
-  // Get all transactions (admin only)
+  // Get all transactions
   async getTransactions(page: number = 1, limit: number = 10) {
     try {
       const response = await apiClient.get<TransactionsListResponse>('/transactions', {
@@ -70,7 +72,7 @@ export const transactionService = {
       });
       return response.data;
     } catch (error) {
-      console.error('Error fetching transactions:', error);
+      console.error('❌ Error fetching transactions:', error);
       throw error;
     }
   },
@@ -81,25 +83,39 @@ export const transactionService = {
       const response = await apiClient.get<TransactionResponse>(`/transactions/${id}`);
       return response.data;
     } catch (error) {
-      console.error(`Error fetching transaction ${id}:`, error);
+      console.error(`❌ Error fetching transaction ${id}:`, error);
       throw error;
     }
   },
 
-  // Get transaction by date range (admin only)
+  // ✅ Cancel transaction (sesuai route backend)
+  async cancelTransaction(id: number) {
+    try {
+      const response = await apiClient.post<TransactionResponse>(`/transactions/${id}/cancel`);
+      return response.data;
+    } catch (error) {
+      console.error(`❌ Error cancelling transaction ${id}:`, error);
+      throw error;
+    }
+  },
+
+  // Get transaction by date range (untuk laporan)
   async getTransactionsByDateRange(startDate: string, endDate: string) {
     try {
-      const response = await apiClient.get<TransactionsListResponse>('/transactions/report', {
-        params: { start_date: startDate, end_date: endDate },
+      const response = await apiClient.get<TransactionsListResponse>('/transactions', {
+        params: { 
+          start_date: startDate, 
+          end_date: endDate 
+        },
       });
       return response.data;
     } catch (error) {
-      console.error('Error fetching transaction report:', error);
+      console.error('❌ Error fetching transaction report:', error);
       throw error;
     }
   },
 
-  // Get daily revenue (admin only)
+  // Get daily revenue
   async getDailyRevenue(date: string) {
     try {
       const response = await apiClient.get('/transactions/daily-revenue', {
@@ -107,7 +123,7 @@ export const transactionService = {
       });
       return response.data;
     } catch (error) {
-      console.error('Error fetching daily revenue:', error);
+      console.error('❌ Error fetching daily revenue:', error);
       throw error;
     }
   },

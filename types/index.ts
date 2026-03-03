@@ -1,38 +1,38 @@
 export interface Product {
-  id: number; // pastikan number, bukan string
+  id: string;
   name: string;
-  price: string;
+  price: number;
   stock: number;
-  image_url: string | null;
-  is_active: number | null;
-  category_id?: number;
+  image: string | null; // ✅ Ganti dari image_url ke image
   category: Category;
+  is_active?: boolean; // ✅ Tambah optional
 }
 
 export interface Category {
-  id: number;
+  id: number | string;
   name: string;
 }
 
 export interface CartItem {
-  id: number;
-  product_id: string;
+  id: string;
   name: string;
   price: number;
   quantity: number;
-  subtotal: number;
-  image?: string | null;
+  stock: number;
+  image: string | null;
+  category: Category;
 }
 
 export interface Receipt {
   invoice_number: string;
+  customer_name?: string; // ✅ Tambah field ini
   date: string;
   cashier: string;
   items: CartItem[];
   subtotal: number;
   tax: number;
   total: number;
-  payment_method: PaymentMethod;
+  payment_method: string;
   paid_amount: number;
   change: number;
 }
