@@ -26,10 +26,36 @@ const config: Config = {
           DEFAULT: '#C9935C',
           dark: '#A0826D',
         },
+        charcoal: {
+          50: '#F9FAFB',
+          100: '#F3F4F6',  // Light gray text
+          200: '#E5E7EB',
+          300: '#D1D5DB',
+          400: '#9CA3AF',
+          500: '#6B7280',
+          600: '#4B5563',
+          700: '#374151',
+          800: '#1F2937',  // Main charcoal
+          900: '#111827',  // Almost black
+        },
+        gold: {
+          50: '#FFFBEB',
+          100: '#FEF3C7',
+          200: '#FDE68A',
+          300: '#FCD34D',
+          400: '#FBBF24',
+          500: '#F59E0B',  // Primary gold
+          600: '#D97706',  // Deep gold
+          700: '#B45309',
+          800: '#92400E',
+          900: '#78350F',
+        },
       },
       backgroundImage: {
         'coffee-gradient': 'linear-gradient(135deg, #A0826D 0%, #8B6F47 100%)',
         'coffee-warm': 'linear-gradient(135deg, #F5E6D3 0%, #E8D4C4 100%)',
+        'charcoal-gradient': 'linear-gradient(135deg, #1F2937 0%, #111827 100%)',
+        'gold-gradient': 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
       },
     },
   },

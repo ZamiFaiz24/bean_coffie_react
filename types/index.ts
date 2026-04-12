@@ -3,7 +3,7 @@ export interface Product {
   name: string;
   price: number;
   stock: number;
-  image: string | null; // ✅ Ganti dari image_url ke image
+  image_url: string | null; // ✅ Ubah dari image ke image_url
   category: Category;
   is_active?: boolean; // ✅ Tambah optional
 }
@@ -19,7 +19,7 @@ export interface CartItem {
   price: number;
   quantity: number;
   stock: number;
-  image: string | null;
+  image_url: string | null;
   category: Category;
 }
 
@@ -60,6 +60,7 @@ export interface TopProduct {
   sold: number;
   revenue: number;
   rank: number;
+  image_url?: string | null;
 }
 
 export interface LowStockProduct {

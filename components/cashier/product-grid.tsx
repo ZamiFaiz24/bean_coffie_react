@@ -76,7 +76,7 @@ export function ProductGrid({
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {products.map((product) => {
             const categoryName = getCategoryName(product.category);
-            const imageUrl = getImageUrl(product.image);
+            const imageUrl = getImageUrl(product.image_url);
             const inCart = isProductInCart(String(product.id));
             const cartQty = getCartQuantity(String(product.id));
             

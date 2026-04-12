@@ -19,12 +19,12 @@ interface ProductFormModalProps {
 }
 
 const initialFormState = {
-  id: 0,
+  id: '',
   name: '',
-  price: '',
+  price: 0,
   stock: 0,
   image: null,
-  is_active: null,
+  is_active: true,
   category: { id: 0, name: '' },
   created_at: '',
   updated_at: '',
@@ -67,7 +67,7 @@ export function ProductFormModal({
       const response = await apiClient.get(`/products/${productId}`);
       const product = response.data.data;
       setFormData(product);
-      setImagePreview(product.image);
+      setImagePreview(product.image_url);
       setImageFile(null);
     } catch (err) {
       console.error('Error fetching product:', err);
@@ -150,7 +150,7 @@ export function ProductFormModal({
         </DialogHeader>
 
         {loading ? (
-          <div className="py-8 text-center">Loading...</div>
+          <div className="py-8 text-center text-slate-600">Loading...</div>
         ) : (
           <div className="space-y-6">
             {error && (
@@ -164,7 +164,7 @@ export function ProductFormModal({
               <Label>Product Image</Label>
               <div className="flex gap-4">
                 {/* Preview */}
-                <div className="w-32 h-32 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 overflow-hidden">
+                <div className="w-32 h-32 rounded-lg border-2 border-dashed border-slate-300 flex items-center justify-center bg-slate-50 overflow-hidden">
                   {imagePreview ? (
                     <img
                       src={imagePreview}
@@ -172,7 +172,7 @@ export function ProductFormModal({
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="text-center text-gray-400">
+                    <div className="text-center text-slate-400">
                       <Upload className="w-6 h-6 mx-auto mb-1" />
                       <p className="text-xs">No Image</p>
                     </div>
@@ -181,13 +181,13 @@ export function ProductFormModal({
 
                 {/* Upload Input */}
                 <div className="flex-1">
-                  <label className="flex flex-col items-center justify-center w-full p-4 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-coffee-400 bg-gray-50 hover:bg-gray-100 transition">
+                  <label className="flex flex-col items-center justify-center w-full p-4 border-2 border-dashed border-slate-300 rounded-lg cursor-pointer hover:border-amber-500 bg-slate-50 hover:bg-slate-100 transition">
                     <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                      <Upload className="w-8 h-8 text-gray-400 mb-2" />
-                      <p className="text-sm text-gray-600">
+                      <Upload className="w-8 h-8 text-slate-400 mb-2" />
+                      <p className="text-sm text-slate-600">
                         <span className="font-semibold">Click untuk upload</span> atau drag and drop
                       </p>
-                      <p className="text-xs text-gray-500 mt-1">PNG, JPG, GIF up to 5MB</p>
+                      <p className="text-xs text-slate-500 mt-1">PNG, JPG, GIF up to 5MB</p>
                     </div>
                     <input
                       type="file"
@@ -222,7 +222,7 @@ export function ProductFormModal({
                   placeholder="e.g., Espresso"
                   value={formData.name || ''}
                   onChange={(e) => handleInputChange('name', e.target.value)}
-                  className="border-coffee-200 focus:border-coffee-600"
+                  className="border-slate-200 focus:border-amber-500 focus:ring-amber-500"
                 />
               </div>
 
@@ -232,9 +232,9 @@ export function ProductFormModal({
                   id="price"
                   type="number"
                   placeholder="e.g., 25000"
-                  value={formData.price || ''}
-                  onChange={(e) => handleInputChange('price', e.target.value)}
-                  className="border-coffee-200 focus:border-coffee-600"
+                  value={formData.price || 0}
+                  onChange={(e) => handleInputChange('price', parseInt(e.target.value))}
+                  className="border-slate-200 focus:border-amber-500 focus:ring-amber-500"
                 />
               </div>
 
@@ -246,7 +246,7 @@ export function ProductFormModal({
                   placeholder="e.g., 50"
                   value={formData.stock || 0}
                   onChange={(e) => handleInputChange('stock', parseInt(e.target.value))}
-                  className="border-coffee-200 focus:border-coffee-600"
+                  className="border-slate-200 focus:border-amber-500 focus:ring-amber-500"
                 />
               </div>
 
@@ -262,7 +262,7 @@ export function ProductFormModal({
                       handleInputChange('category', selectedCategory);
                     }
                   }}
-                  className="w-full px-3 py-2 border border-coffee-200 rounded-md focus:border-coffee-600 focus:ring-1 focus:ring-coffee-600"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-md focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
                 >
                   {categories.map((cat) => (
                     <option key={cat.id} value={cat.id}>
@@ -282,7 +282,7 @@ export function ProductFormModal({
           <Button
             onClick={handleSave}
             disabled={saving || loading}
-            className="bg-coffee-700 hover:bg-coffee-800"
+            className="bg-amber-500 hover:bg-amber-600 text-slate-900"
           >
             {saving ? 'Saving...' : mode === 'create' ? 'Add Product' : 'Save Changes'}
           </Button>

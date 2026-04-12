@@ -11,23 +11,23 @@ interface LowStockAlertsProps {
 
 export function LowStockAlerts({ products }: LowStockAlertsProps) {
   return (
-    <Card className="border-orange-200">
+    <Card className="border-red-200">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <AlertTriangle className="w-5 h-5 text-orange-600" />
+        <CardTitle className="flex items-center gap-2 text-slate-900">
+          <AlertTriangle className="w-5 h-5 text-red-500" />
           Low Stock Alerts
         </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-3">
           {products.map((product) => (
-            <div key={product.id} className="flex items-center justify-between p-3 bg-orange-50 rounded-lg border border-orange-200">
+            <div key={product.id} className="flex items-center justify-between p-3 bg-red-50 rounded-lg border border-red-200 hover:shadow-md transition-shadow duration-200">
               <div className="flex items-center gap-2">
-                <AlertCircle className="w-5 h-5 text-orange-600" />
-                <span className="font-semibold">{product.name}</span>
+                <AlertCircle className="w-5 h-5 text-red-500" />
+                <span className="font-semibold text-slate-900">{product.name}</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-sm font-bold">{product.stock} units</span>
+                <span className="text-sm font-bold text-slate-700">{product.stock} units</span>
                 <Badge variant={product.status === 'out' ? 'destructive' : 'secondary'}>
                   {product.status === 'out' ? 'Out of Stock' : 'Low Stock'}
                 </Badge>

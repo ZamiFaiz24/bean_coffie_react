@@ -92,7 +92,7 @@ export function useAdminDashboard() {
           items.forEach((item: any) => {
             const productId = item.product_id;
             const existing = topProductsMap.get(productId);
-            const qty = parseFloat(item.qty) || 0;
+            const qty = parseFloat(item.quantity) || 0;  // ✅ Ubah dari item.qty ke item.quantity
             const subtotal = parseFloat(item.subtotal) || 0;
 
             if (existing) {
@@ -114,7 +114,15 @@ export function useAdminDashboard() {
       const sortedTopProducts = Array.from(topProductsMap.values())
         .sort((a, b) => b.sold - a.sold)
         .slice(0, 5)
-        .map((p, idx) => ({ ...p, rank: idx + 1 }));
+        .map((p, idx) => {
+          // Find product image from products list
+          const productData = products.find((prod: any) => prod.id === p.id);
+          return {
+            ...p,
+            rank: idx + 1,
+            image_url: productData?.image_url || null,
+          };
+        });
 
       setTopProducts(sortedTopProducts);
 

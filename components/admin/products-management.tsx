@@ -36,7 +36,7 @@ export function ProductsManagement() {
     }
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     if (!confirm('Yakin mau hapus product ini?')) return;
 
     try {
@@ -55,9 +55,9 @@ export function ProductsManagement() {
     setIsFormOpen(true);
   };
 
-  const handleEditClick = (id: number) => {
+  const handleEditClick = (id: string) => {
     setFormMode('edit');
-    setEditingId(id);
+    setEditingId(parseInt(id));
     setIsFormOpen(true);
   };
 
@@ -66,15 +66,15 @@ export function ProductsManagement() {
   };
 
   if (loading) {
-    return <div className="text-center py-12">Loading...</div>;
+    return <div className="text-center py-12 text-slate-600">Loading...</div>;
   }
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-bold">Products Management</h2>
+        <h2 className="text-3xl font-bold text-slate-900">Products Management</h2>
         <Button
-          className="gap-2 bg-coffee-700 hover:bg-coffee-800"
+          className="gap-2 bg-amber-500 hover:bg-amber-600 text-slate-900"
           onClick={handleAddClick}
         >
           <Plus className="w-4 h-4" />
@@ -84,25 +84,25 @@ export function ProductsManagement() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Daftar Product</CardTitle>
+          <CardTitle className="text-slate-900">Daftar Product</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b">
-                  <th className="text-left py-3 px-4">ID</th>
-                  <th className="text-left py-3 px-4">Gambar</th>
-                  <th className="text-left py-3 px-4">Nama Product</th>
-                  <th className="text-left py-3 px-4">Harga</th>
-                  <th className="text-left py-3 px-4">Stock</th>
-                  <th className="text-left py-3 px-4">Aksi</th>
+                <tr className="border-b border-slate-200 bg-slate-50">
+                  <th className="text-left py-3 px-4 font-semibold text-slate-900">ID</th>
+                  <th className="text-left py-3 px-4 font-semibold text-slate-900">Gambar</th>
+                  <th className="text-left py-3 px-4 font-semibold text-slate-900">Nama Product</th>
+                  <th className="text-left py-3 px-4 font-semibold text-slate-900">Harga</th>
+                  <th className="text-left py-3 px-4 font-semibold text-slate-900">Stock</th>
+                  <th className="text-left py-3 px-4 font-semibold text-slate-900">Aksi</th>
                 </tr>
               </thead>
               <tbody>
                 {products.map((product) => (
-                  <tr key={product.id} className="border-b hover:bg-muted/50">
-                    <td className="py-3 px-4">{product.id}</td>
+                  <tr key={product.id} className="border-b border-slate-200 hover:bg-slate-50 transition-colors">
+                    <td className="py-3 px-4 text-slate-700">{product.id}</td>
                     <td className="py-3 px-4">
                       {product.image_url ? (
                         <img
@@ -111,14 +111,14 @@ export function ProductsManagement() {
                           className="w-10 h-10 rounded object-cover"
                         />
                       ) : (
-                        <div className="w-10 h-10 rounded bg-muted flex items-center justify-center text-xs text-muted-foreground">
+                        <div className="w-10 h-10 rounded bg-slate-200 flex items-center justify-center text-xs text-slate-600">
                           No Image
                         </div>
                       )}
                     </td>
-                    <td className="py-3 px-4 font-medium">{product.name}</td>
-                    <td className="py-3 px-4">Rp {Number(product.price).toLocaleString()}</td>
-                    <td className="py-3 px-4">{product.stock}</td>
+                    <td className="py-3 px-4 font-medium text-slate-900">{product.name}</td>
+                    <td className="py-3 px-4 text-amber-600 font-semibold">Rp {Number(product.price).toLocaleString()}</td>
+                    <td className="py-3 px-4 text-slate-700">{product.stock}</td>
                     <td className="py-3 px-4">
                       <div className="flex gap-2">
                         <Button
