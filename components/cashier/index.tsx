@@ -139,31 +139,52 @@ export function CashierPage() {
     try {
       setProductsLoading(true);
 
-      const orderItems = cart.map(item => ({
+      const orderItems = cart.map((item) => ({
         product_id: Number(item.id),
-        quantity: item.quantity,
-        price: item.price,
+        quantity: Number(item.quantity),
       }));
 
-      // ✅ Calculate sendiri di sini atau gunakan dari CartFloating
-      const subtotal = cart.reduce((sum, item) => {
-        const price = typeof item.price === 'string' ? parseFloat(item.price) : item.price;
-        return sum + (price * item.quantity);
-      }, 0);
-      const tax = subtotal * 0.1;
-      const total = subtotal + tax;
-
-      const response = await transactionService.createTransaction({
+      const payload = {
         customer_name: customerName || 'Walk-in Customer',
         items: orderItems,
-        payment_method: paymentMethod,
-        paid_amount: paidAmount,
-      });
+        paid_amount: Number(paidAmount),
+      };
+
+      const response = await transactionService.createTransaction(payload);
+
+      // ✅ Support dua bentuk response:
+      // 1) Axios raw: response.data.data
+      // 2) Service sudah unwrap: response / response.data
+      const trx: any =
+        (response as any)?.data?.data ?? (response as any)?.data ?? response;
 
       const now = new Date();
+
+      const receiptItems: CartItem[] = (trx?.items ?? []).map((it: any) => ({
+        id: String(it.product_id),
+        name: it.product_name,
+        price: Number(it.price),
+        quantity: Number(it.quantity ?? it.qty ?? 0),
+        image: '',
+      }));
+
+      const subtotal = receiptItems.reduce(
+        (sum, it) => sum + Number(it.price) * Number(it.quantity),
+        0
+      );
+
+      // Jika backend kirim total_amount, pakai itu. Jika tidak, fallback subtotal.
+      const total = Number(trx?.total_amount ?? subtotal);
+
+      // Tax inferred dari selisih total - subtotal (agar tidak 0 salah).
+      const tax = Math.max(0, total - subtotal);
+
+      const paid = Number(trx?.paid_amount ?? paidAmount);
+      const change = Number(trx?.change_amount ?? Math.max(0, paid - total));
+
       const newReceipt: Receipt = {
-        invoice_number: response.data.invoice_number,
-        customer_name: customerName || 'Walk-in Customer',
+        invoice_number: trx?.invoice_code ?? '-',
+        customer_name: trx?.customer_name ?? (customerName || 'Walk-in Customer'),
         date: now.toLocaleString('id-ID', {
           year: 'numeric',
           month: 'long',
@@ -171,26 +192,28 @@ export function CashierPage() {
           hour: '2-digit',
           minute: '2-digit',
         }),
-        cashier: user?.name || 'Unknown',
-        items: cart,
-        subtotal: subtotal, // ✅ Gunakan nilai yang baru dihitung
-        tax: tax,
-        total: total,
+        cashier: trx?.cashier ?? (user?.name || 'Unknown'),
+        items: receiptItems,
+        subtotal,
+        tax,
+        total,
         payment_method: paymentMethod,
-        paid_amount: paidAmount,
-        change: paidAmount - total,
+        paid_amount: paid,
+        change,
       };
 
       setReceipt(newReceipt);
       setIsReceiptOpen(true);
-
       clearCart();
       setSelectedCategory('all');
-
-      console.log('✅ Order created successfully:', response.data);
     } catch (error: any) {
       console.error('❌ Error creating order:', error);
-      alert(`Error: ${error.message}`);
+      if (error.response?.data) {
+        console.error('❌ Backend validation errors:', error.response.data);
+        alert(`Validation Error: ${JSON.stringify(error.response.data)}`);
+      } else {
+        alert(`Error: ${error.message}`);
+      }
     } finally {
       setProductsLoading(false);
     }

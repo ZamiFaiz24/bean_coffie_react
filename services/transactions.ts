@@ -25,13 +25,11 @@ export interface Transaction {
 }
 
 export interface CreateTransactionPayload {
-  customer_name?: string; // ✅ Tambah field ini
-  items: Array<{
+  customer_name: string;
+  items: {
     product_id: number;
     quantity: number;
-    price: number;
-  }>;
-  payment_method: 'cash' | 'qris' | 'debit' | 'card' | 'transfer';
+  }[];
   paid_amount: number;
 }
 
