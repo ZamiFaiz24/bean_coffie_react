@@ -226,10 +226,15 @@ export function CashierPage() {
 
   // Filter products by category & search
   const filteredProducts = useMemo(() => {
-    return products.filter(product => {
-      const matchesCategory = selectedCategory === 'all' || product.category?.id === selectedCategory;
-      const matchesSearch = searchQuery === '' || 
+    return products.filter((product) => {
+      const matchesCategory =
+        selectedCategory === 'all' ||
+        String(product.category?.id) === String(selectedCategory);
+
+      const matchesSearch =
+        searchQuery === '' ||
         product.name.toLowerCase().includes(searchQuery.toLowerCase());
+
       return matchesCategory && matchesSearch;
     });
   }, [products, selectedCategory, searchQuery]);

@@ -3,7 +3,7 @@ export interface Product {
   name: string;
   price: number;
   stock: number;
-  image_url: string | null; // ✅ Ubah dari image ke image_url
+  image: string | null; // ✅ Ubah dari image ke image_url
   category: Category;
   is_active?: boolean; // ✅ Tambah optional
 }
