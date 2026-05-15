@@ -77,7 +77,7 @@ export function CartFloating({
     return (
       <button
         onClick={toggleCart}
-        className="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-coffee-600 to-coffee-700 text-white rounded-full shadow-xl hover:shadow-lg transition-all hover:scale-110 p-4 flex items-center space-x-3"
+        className="fixed bottom-6 right-6 z-50 bg-emerald-700 text-white rounded-full shadow-lg hover:shadow-lg transition-all hover:scale-105 p-4 flex items-center space-x-3"
       >
         <div className="relative">
           <ShoppingCart className="w-6 h-6" />
@@ -96,10 +96,10 @@ export function CartFloating({
 
   // Full Cart Popup
   return (
-    <div className="fixed bottom-6 right-6 z-50 w-96 max-h-[90vh] flex flex-col">
-      <Card className="shadow-xl border-2 border-coffee-300 overflow-hidden flex flex-col h-full">
+    <div className="fixed bottom-6 right-6 z-50 w-[95vw] sm:w-96 max-h-[90vh] flex flex-col">
+      <Card className="shadow-lg border border-gray-200 overflow-hidden flex flex-col h-full">
         {/* Header */}
-        <div className="bg-gradient-to-r from-coffee-600 to-coffee-700 text-white px-4 py-3 flex justify-between items-center flex-shrink-0">
+        <div className="bg-linear-to-r from-emerald-700 to-emerald-600 text-white px-4 py-2 flex justify-between items-center shrink-0">
           <div className="flex items-center space-x-2">
             <ShoppingCart className="w-5 h-5" />
             <h3 className="font-bold text-lg">Detail Transaction</h3>
@@ -107,14 +107,14 @@ export function CartFloating({
           <div className="flex items-center space-x-2">
             <button
               onClick={toggleCart}
-              className="hover:bg-coffee-500 rounded p-1 transition"
+              className="hover:bg-emerald-500 rounded p-1 transition"
               title="Minimize"
             >
               <Minus className="w-5 h-5" />
             </button>
             <button
               onClick={closeCart}
-              className="hover:bg-coffee-500 rounded p-1 transition"
+              className="hover:bg-emerald-500 rounded p-1 transition"
               title="Close"
             >
               <X className="w-5 h-5" />
@@ -125,15 +125,15 @@ export function CartFloating({
         {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto flex flex-col">
           {/* Customer Name */}
-          <div className="bg-white px-4 py-3 border-b border-coffee-200 flex-shrink-0">
-            <p className="text-xs text-coffee-600 font-semibold mb-1">Customer</p>
+          <div className="bg-white px-4 pt-2 pb-3 border-b border-gray-200 shrink-0">
+            <p className="text-xs text-gray-700 font-semibold mb-1">Customer</p>
             {isEditingName ? (
               <div className="flex gap-2">
                 <input
                   type="text"
                   value={tempName}
                   onChange={(e) => setTempName(e.target.value)}
-                  className="flex-1 px-2 py-1 border border-coffee-300 rounded text-sm focus:outline-none focus:border-coffee-600"
+                  className="flex-1 px-2 py-1 border border-emerald-300 rounded text-sm focus:outline-none focus:border-emerald-600"
                   autoFocus
                 />
                 <Button
@@ -154,10 +154,10 @@ export function CartFloating({
               </div>
             ) : (
               <div className="flex items-center justify-between">
-                <p className="text-sm font-semibold text-coffee-800">{customerName}</p>
+                <p className="text-sm font-semibold text-emerald-800">{customerName}</p>
                 <button
                   onClick={() => setIsEditingName(true)}
-                  className="text-coffee-600 hover:text-coffee-700 p-1"
+                  className="text-emerald-600 hover:text-emerald-700 p-1"
                   title="Edit"
                 >
                   <Edit2 className="w-4 h-4" />
@@ -167,7 +167,7 @@ export function CartFloating({
           </div>
 
           {/* Cart Items */}
-          <div className="px-3 py-3 bg-coffee-50 flex-shrink-0">
+          <div className="px-3 py-3 bg-gray-50 shrink-0">
             <CartItems
               items={items}
               onUpdateQuantity={onUpdateQuantity}
@@ -176,28 +176,28 @@ export function CartFloating({
           </div>
 
           {/* Summary */}
-          <div className="bg-white px-4 py-3 border-t border-coffee-200 space-y-2 flex-shrink-0">
+          <div className="bg-white px-4 py-3 border-t border-emerald-200 space-y-2 shrink-0">
             <div className="flex justify-between text-sm">
-              <span className="text-coffee-700">Sub Total</span>
-              <span className="font-semibold text-coffee-900">Rp {subtotal.toLocaleString('id-ID')}</span>
+              <span className="text-gray-700">Sub Total</span>
+              <span className="font-semibold text-emerald-900">Rp {subtotal.toLocaleString('id-ID')}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-coffee-700">Tax (10%)</span>
-              <span className="font-semibold text-coffee-900">Rp {tax.toLocaleString('id-ID')}</span>
+              <span className="text-gray-700">Tax (10%)</span>
+              <span className="font-semibold text-emerald-900">Rp {tax.toLocaleString('id-ID')}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-coffee-700">Discount</span>
+              <span className="text-gray-700">Discount</span>
               <span className="font-semibold text-red-600">-Rp 0</span>
             </div>
-            <div className="border-t border-coffee-200 pt-2 flex justify-between bg-coffee-50 p-2 rounded -mx-4 px-4">
-              <span className="font-bold text-coffee-900">Total Payment</span>
-              <span className="font-bold text-lg text-coffee-900">Rp {total.toLocaleString('id-ID')}</span>
+            <div className="border-t border-emerald-200 pt-2 flex justify-between bg-emerald-50 p-2 rounded -mx-4 px-4">
+              <span className="font-bold text-emerald-900">Total Payment</span>
+              <span className="font-bold text-lg text-emerald-900">Rp {total.toLocaleString('id-ID')}</span>
             </div>
           </div>
         </div>
 
         {/* Payment Section */}
-        <div className="bg-white px-4 py-3 border-t border-coffee-200 flex-shrink-0">
+        <div className="bg-white px-4 py-3 border-t border-emerald-200 shrink-0">
           <PaymentSection
             subtotal={subtotal}
             tax={tax}

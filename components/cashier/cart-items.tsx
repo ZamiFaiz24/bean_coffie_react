@@ -18,7 +18,7 @@ export function CartItems({
   if (items.length === 0) {
     return (
       <div className="text-center py-8">
-        <p className="text-coffee-600 font-semibold">Cart is empty</p>
+        <p className="text-emerald-600 font-semibold">Cart is empty</p>
       </div>
     );
   }
@@ -40,12 +40,12 @@ export function CartItems({
       {items.map(item => (
         <div
           key={item.id}
-          className="bg-white rounded-lg p-3 border border-coffee-200 hover:border-coffee-400 transition"
+          className="bg-white rounded-lg p-3 border border-gray-200 transition-all hover:shadow-md"
         >
           {/* Item Header with Image */}
           <div className="flex gap-3 mb-2">
             {/* Product Image */}
-            <div className="w-16 h-16 flex-shrink-0 bg-coffee-100 rounded-lg overflow-hidden border border-coffee-200">
+            <div className="w-16 h-16 shrink-0 bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
               {item.image ? (
                 <img
                   src={item.image}
@@ -61,13 +61,13 @@ export function CartItems({
 
             {/* Item Info */}
             <div className="flex-1 min-w-0">
-              <p className="font-semibold text-coffee-900 text-sm truncate">
+              <p className="font-semibold text-gray-900 text-sm truncate">
                 {item.name}
               </p>
-              <p className="text-xs text-coffee-600 mt-1">
+              <p className="text-xs text-gray-500 mt-1">
                 Rp {item.price.toLocaleString('id-ID')}
               </p>
-              <p className="text-sm font-bold text-coffee-700 mt-1">
+              <p className="text-sm font-bold text-emerald-600 mt-1">
                 Rp {(item.price * item.quantity).toLocaleString('id-ID')}
               </p>
             </div>
@@ -78,7 +78,7 @@ export function CartItems({
                 console.log('Remove clicked for:', item.id);
                 onRemove(item.id);
               }}
-              className="text-red-500 hover:text-red-700 hover:bg-red-50 rounded p-1 transition flex-shrink-0"
+              className="text-gray-400 hover:text-red-500 rounded p-1 transition-all hover:scale-110 shrink-0"
               title="Remove"
             >
               <X className="w-4 h-4" />
@@ -86,25 +86,25 @@ export function CartItems({
           </div>
 
           {/* Quantity Control */}
-          <div className="flex items-center gap-2 bg-coffee-50 rounded p-2">
+          <div className="flex items-center gap-2 bg-gray-100 rounded-full px-2 py-1 border border-gray-200">
             <button
               onClick={() => handleMinus(item)}
-              className={`text-coffee-700 rounded p-1 transition ${
+              className={`text-emerald-600 rounded p-1 transition-all ${
                 item.quantity <= 1
                   ? 'opacity-50 cursor-not-allowed'
-                  : 'hover:bg-coffee-200 cursor-pointer'
+                  : 'hover:bg-emerald-600 hover:text-white hover:scale-110 cursor-pointer'
               }`}
               disabled={item.quantity <= 1}
               title="Decrease quantity"
             >
               <Minus className="w-4 h-4" />
             </button>
-            <span className="flex-1 text-center font-semibold text-coffee-900 text-sm">
+            <span className="flex-1 text-center font-bold text-gray-900 text-sm">
               {item.quantity}
             </span>
             <button
               onClick={() => handlePlus(item)}
-              className="text-coffee-700 hover:bg-coffee-200 rounded p-1 transition cursor-pointer"
+              className="text-emerald-600 hover:bg-emerald-600 hover:text-white rounded p-1 transition-all hover:scale-110 cursor-pointer"
               title="Increase quantity"
             >
               <Plus className="w-4 h-4" />

@@ -43,7 +43,6 @@ export function CashierPage() {
     updateQuantity,
     removeFromCart,
     clearCart,
-    // ✅ HAPUS: getTotal, getSubtotal, getTax
   } = useCart();
 
   // Check auth & fetch products
@@ -244,7 +243,7 @@ export function CashierPage() {
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
           <div className="text-5xl mb-4">☕</div>
-          <p className="text-coffee-600 font-semibold">Loading...</p>
+          <p className="text-emerald-650 font-semibold">Loading...</p>
         </div>
       </div>
     );
@@ -255,7 +254,7 @@ export function CashierPage() {
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
           <p className="text-red-600 font-semibold mb-4">{error}</p>
-          <p className="text-coffee-600">Redirecting...</p>
+          <p className="text-emerald-650">Redirecting...</p>
         </div>
       </div>
     );
@@ -266,14 +265,14 @@ export function CashierPage() {
       <div className="p-6 space-y-6">
         {/* ✅ Alert Banner */}
         {showAlert && (
-          <div className="animate-slide-up bg-gradient-to-r from-coffee-600 to-coffee-700 text-white rounded-lg p-4 flex justify-between items-center shadow-lg">
+          <div className="animate-slide-up bg-emerald-700 text-white rounded-lg p-4 flex justify-between items-center shadow-lg">
             <div>
               <p className="font-semibold">Welcome, {user?.name}! 👋</p>
-              <p className="text-sm text-coffee-100">Ready to serve? Let's start taking orders!</p>
+              <p className="text-sm text-emerald-100">Ready to serve? Let's start taking orders!</p>
             </div>
             <button
               onClick={() => setShowAlert(false)}
-              className="text-white hover:bg-coffee-500 p-2 rounded transition"
+              className="text-white hover:bg-emerald-600 p-2 rounded transition"
             >
               <X className="w-5 h-5" />
             </button>
@@ -283,25 +282,25 @@ export function CashierPage() {
         {/* ✅ Search Header - Search Besar dengan Filter */}
         <div className="grid grid-cols-12 gap-4">
           {/* Center Box: Search Bar - 11 kolom (lebih besar) */}
-          <div className="col-span-11 bg-white rounded-lg p-4 border border-coffee-200 flex items-center">
+          <div className="col-span-11 bg-white rounded-lg p-4 border border-charcoal-200 flex items-center shadow-soft hover:shadow-card transition-all">
             <div className="w-full relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-coffee-400 w-5 h-5" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-emerald-600 w-5 h-5" />
               <input
                 type="text"
                 placeholder="Search Product Name..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 bg-coffee-50 border border-coffee-300 rounded-lg focus:outline-none focus:border-coffee-600 text-sm"
+                className="w-full pl-10 pr-4 py-2 bg-charcoal-50 border border-charcoal-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 text-sm transition-all"
               />
             </div>
           </div>
 
           {/* Right Box: Filter Button - 1 kolom */}
-          <div className="col-span-1 bg-white rounded-lg p-4 border border-coffee-200 flex items-center justify-center">
+          <div className="col-span-1 bg-white rounded-lg p-4 border border-charcoal-200 flex items-center justify-center">
             <Button
               variant="ghost"
               size="icon"
-              className="text-coffee-800 hover:bg-coffee-100"
+              className="text-charcoal-900 hover:bg-emerald-50"
               title="Filter by price (coming soon)"
             >
               <Filter className="w-6 h-6" />
@@ -310,7 +309,7 @@ export function CashierPage() {
         </div>
 
         {/* Category Filter */}
-        <div className="bg-white rounded-lg p-4 border border-coffee-200">
+        <div className="bg-white rounded-lg p-4 border border-charcoal-200">
           <CategoryFilter
             categories={categories}
             selectedCategory={selectedCategory}
@@ -319,7 +318,7 @@ export function CashierPage() {
         </div>
 
         {/* Product Grid */}
-        <div className="bg-white rounded-lg p-6 border border-coffee-200">
+        <div className="bg-white rounded-lg p-6 border border-charcoal-200">
           <ProductGrid
             products={filteredProducts}
             isLoading={productsLoading}

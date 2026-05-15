@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { Wallet, CreditCard, Smartphone, CheckCircle2 } from 'lucide-react';
 
 interface PaymentSectionProps {
   subtotal: number;
@@ -51,27 +52,31 @@ export function PaymentSection({
           <button
             key={method}
             onClick={() => setPaymentMethod(method)}
-            className={`flex-1 py-2 px-2 rounded-lg font-semibold text-sm transition ${
+            className={`flex-1 py-2 px-2 rounded-lg font-semibold text-sm transition-all hover:shadow-md ${
               paymentMethod === method
-                ? 'bg-coffee-600 text-white'
-                : 'bg-coffee-100 text-coffee-700 hover:bg-coffee-200'
+                ? 'bg-emerald-600 text-white shadow-md'
+                : 'bg-gray-100 text-gray-900 hover:bg-emerald-50 border border-gray-200'
             }`}
           >
-            {method === 'cash' && '💵 Cash'}
-            {method === 'card' && '💳 Card'}
-            {method === 'transfer' && '📱 Transfer'}
+            <div className="flex items-center justify-center gap-2">
+              {method === 'cash' && <Wallet className="w-4 h-4" />}
+              {method === 'card' && <CreditCard className="w-4 h-4" />}
+              {method === 'transfer' && <Smartphone className="w-4 h-4" />}
+
+              <span className="capitalize">{method}</span>
+            </div>
           </button>
         ))}
       </div>
 
       {/* Paid Amount Input */}
       <div className="space-y-1">
-        <label className="text-xs font-semibold text-coffee-600">Paid Amount</label>
+        <label className="text-xs font-semibold text-emerald-600">Paid Amount</label>
         <input
           type="number"
           value={paidAmount}
           onChange={(e) => setPaidAmount(Number(e.target.value))}
-          className="w-full px-3 py-2 border border-coffee-300 rounded-lg focus:outline-none focus:border-coffee-600 text-sm"
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-emerald-600 text-sm"
         />
       </div>
 
@@ -94,17 +99,17 @@ export function PaymentSection({
         <Button
           onClick={handleReset}
           variant="outline"
-          className="flex-1 border-coffee-300 text-coffee-700 hover:bg-coffee-50 text-sm"
+          className="flex-1 border-gray-300 text-gray-900 hover:bg-gray-100 hover:border-gray-400 text-sm transition-all"
           disabled={disabled}
         >
           Cancel
         </Button>
         <Button
           onClick={handlePayment}
-          className="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold text-sm"
+          className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm transition-all hover:shadow-md hover:scale-105"
           disabled={disabled || paidAmount < total}
         >
-          Continue
+          ✅ Complete Order
         </Button>
       </div>
     </div>

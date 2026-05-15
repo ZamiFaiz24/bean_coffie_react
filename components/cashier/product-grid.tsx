@@ -58,10 +58,10 @@ export function ProductGrid({
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-coffee-800">📦 Products</h2>
+        <h2 className="text-2xl font-bold text-gray-800">Products</h2>
         {isLoading && (
-          <div className="flex items-center space-x-2 text-coffee-600">
-            <div className="animate-spin rounded-full h-5 w-5 border-2 border-coffee-600 border-t-transparent"></div>
+          <div className="flex items-center space-x-2 text-emerald-600">
+            <div className="animate-spin rounded-full h-5 w-5 border-2 border-emerald-600 border-t-transparent"></div>
             <span className="font-semibold text-sm">Loading...</span>
           </div>
         )}
@@ -70,7 +70,7 @@ export function ProductGrid({
       {products.length === 0 ? (
         <div className="text-center py-12 bg-white rounded-lg">
           <div className="text-6xl mb-4">🔍</div>
-          <p className="text-coffee-600 text-lg">No products found</p>
+          <p className="text-emerald-600 text-lg">No products found</p>
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -83,11 +83,11 @@ export function ProductGrid({
             return (
               <Card
                 key={product.id}
-                className="hover:shadow-lg transition-all cursor-pointer border-2 border-coffee-200 hover:border-coffee-400 bg-white h-full flex flex-col"
+                className="bg-white h-full flex flex-col shadow-soft transition-all duration-200 cursor-pointer border-2 border-gray-200 hover:border-emerald-600 hover:scale-100 hover:-translate-y-1 hover:shadow-xl"
               >
                 <CardContent className="p-4 space-y-3 flex-1 flex flex-col">
                   {/* Image */}
-                  <div className="w-full h-40 bg-coffee-100 rounded-lg overflow-hidden flex items-center justify-center">
+                  <div className="w-full h-40 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center">
                     {imageUrl ? (
                       <img
                         src={imageUrl}
@@ -106,41 +106,51 @@ export function ProductGrid({
 
                   {/* Content */}
                   <div className="flex-1">
-                    <p className="text-sm font-bold text-coffee-800 line-clamp-2 mb-1">
+                    <p className="text-sm font-bold text-gray-800 line-clamp-2 mb-1">
                       {product.name}
                     </p>
 
                     {categoryName && (
-                      <Badge variant="secondary" className="text-xs mb-2 bg-coffee-200 text-coffee-700">
+                      <Badge
+                        variant="secondary"
+                        className="mb-2 bg-amber-400 text-gray-900 text-xs font-semibold"
+                      >
                         {categoryName}
                       </Badge>
                     )}
-
-                    <p className="text-lg font-bold text-coffee-500 mb-2">
+                    <p className="text-lg font-bold text-gray-800 mb-2">
                       {formatPrice(product.price)}
                     </p>
 
                     <div className="flex justify-between items-center">
-                      <span className="text-xs text-coffee-600 font-semibold">Stock:</span>
+                      <span className="text-xs text-emerald-600 font-semibold">Stock:</span>
                       <Badge
-                        variant={product.stock > 10 ? 'default' : product.stock > 0 ? 'secondary' : 'destructive'}
-                        className="text-xs"
+                        className={`
+                          text-xs font-semibold
+
+                          ${
+                            product.stock > 10
+                              ? 'bg-emerald-100 text-emerald-700'
+                              : product.stock > 0
+                              ? 'bg-amber-100 text-amber-700'
+                              : 'bg-red-100 text-red-700'
+                          }
+                        `}
                       >
                         {product.stock}
                       </Badge>
                     </div>
                   </div>
 
-                  {/* Button - Only Color Difference */}
-                  <Button
+                  <button
                     onClick={() => onAddToCart(product)}
                     disabled={product.stock === 0}
-                    className={`w-full text-white font-semibold transition-all mt-2 ${
+                    className={`w-full text-gray-700 font-semibold transition-all mt-2 rounded-md px-3 py-2 hover:shadow-md hover:scale-100 ${
                       inCart
-                        ? 'bg-green-500 hover:bg-green-600' // ✅ Hijau jika di cart
-                        : 'bg-coffee-600 hover:bg-coffee-700' // Coklat jika belum
+                        ? 'bg-green-600 hover:bg-green-700' // ✅ Hijau jika di cart
+                        : 'bg-amber-400 hover:bg-amber-500 hover:text-gray-900' // Amber accent jika belum
                     } disabled:opacity-50`}
-                    size="sm"
+                    type="button"
                   >
                     {product.stock === 0 ? (
                       '❌ Out of Stock'
@@ -155,7 +165,7 @@ export function ProductGrid({
                         Add to Cart
                       </span>
                     )}
-                  </Button>
+                  </button>
                 </CardContent>
               </Card>
             );

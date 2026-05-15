@@ -19,7 +19,7 @@ export interface CartItem {
   price: number;
   quantity: number;
   stock: number;
-  image_url: string | null;
+  image: string | null;
   category: Category;
 }
 
@@ -60,7 +60,7 @@ export interface TopProduct {
   sold: number;
   revenue: number;
   rank: number;
-  image_url?: string | null;
+  image?: string | null;
 }
 
 export interface LowStockProduct {

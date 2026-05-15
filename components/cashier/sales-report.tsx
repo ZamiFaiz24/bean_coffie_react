@@ -202,8 +202,8 @@ export function SalesReport() {
     return (
       <div className="flex items-center justify-center h-96">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-4 border-coffee-600 border-t-transparent mx-auto mb-4"></div>
-          <p className="text-coffee-600">Loading sales data...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-emerald-650 border-t-transparent mx-auto mb-4"></div>
+          <p className="text-emerald-650">Loading sales data...</p>
         </div>
       </div>
     );
@@ -213,7 +213,7 @@ export function SalesReport() {
     return (
       <div className="text-center py-12">
         <p className="text-red-600 font-semibold mb-4">{error}</p>
-        <Button onClick={fetchTransactions} className="bg-coffee-600 hover:bg-coffee-700">
+        <Button onClick={fetchTransactions} className="bg-emerald-650 hover:bg-emerald-700">
           Retry
         </Button>
       </div>
@@ -225,38 +225,38 @@ export function SalesReport() {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-3">
-          <TrendingUp className="w-8 h-8 text-coffee-700" />
-          <h1 className="text-3xl font-bold text-coffee-800">Sales Report</h1>
+          <TrendingUp className="w-8 h-8 text-emerald-700" />
+          <h1 className="text-3xl font-bold text-charcoal-900">Sales Report</h1>
         </div>
-        <Button onClick={fetchTransactions} className="bg-coffee-600 hover:bg-coffee-700 text-white">
+        <Button onClick={fetchTransactions} className="bg-emerald-650 hover:bg-emerald-700 text-white">
           <RotateCcw className="w-4 h-4 mr-2" />
           Refresh
         </Button>
       </div>
 
       {/* Filter Section */}
-      <Card className="bg-coffee-50 border-coffee-200">
+      <Card className="bg-emerald-50 border-charcoal-200">
         <CardContent className="p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Date From */}
             <div>
-              <label className="block text-sm font-medium text-coffee-700 mb-2">From Date</label>
+              <label className="block text-sm font-medium text-emerald-700 mb-2">From Date</label>
               <input
                 type="date"
                 value={filterDateFrom ? formatDateInput(filterDateFrom) : ''}
                 onChange={(e) => setFilterDateFrom(e.target.value ? new Date(e.target.value).toISOString() : '')}
-                className="w-full px-3 py-2 border border-coffee-200 rounded-md focus:outline-none focus:ring-2 focus:ring-coffee-600"
+                className="w-full px-3 py-2 border border-charcoal-200 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-650"
               />
             </div>
 
             {/* Date To */}
             <div>
-              <label className="block text-sm font-medium text-coffee-700 mb-2">To Date</label>
+              <label className="block text-sm font-medium text-emerald-700 mb-2">To Date</label>
               <input
                 type="date"
                 value={filterDateTo ? formatDateInput(filterDateTo) : ''}
                 onChange={(e) => setFilterDateTo(e.target.value ? new Date(e.target.value).toISOString() : '')}
-                className="w-full px-3 py-2 border border-coffee-200 rounded-md focus:outline-none focus:ring-2 focus:ring-coffee-600"
+                className="w-full px-3 py-2 border border-charcoal-200 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-650"
               />
             </div>
           </div>
@@ -269,7 +269,7 @@ export function SalesReport() {
                 setFilterDateTo('');
               }}
               variant="outline"
-              className="mt-4 border-coffee-300 text-coffee-700 hover:bg-coffee-100"
+              className="mt-4 border-charcoal-300 text-emerald-700 hover:bg-charcoal-50"
             >
               Clear Filters
             </Button>
@@ -280,53 +280,53 @@ export function SalesReport() {
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {/* Total Sales */}
-        <Card className="border-coffee-200">
+        <Card className="border-charcoal-200">
           <CardContent className="p-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-xs text-coffee-600 font-medium mb-1">Total Sales</p>
-                <p className="text-2xl font-bold text-coffee-900">{formatCurrency(summary.totalSales)}</p>
+                <p className="text-xs text-emerald-650 font-medium mb-1">Total Sales</p>
+                <p className="text-2xl font-bold text-emerald-900">{formatCurrency(summary.totalSales)}</p>
               </div>
-              <DollarSign className="w-8 h-8 text-coffee-600 opacity-20" />
+              <DollarSign className="w-8 h-8 text-emerald-650 opacity-20" />
             </div>
           </CardContent>
         </Card>
 
         {/* Total Transactions */}
-        <Card className="border-coffee-200">
+        <Card className="border-charcoal-200">
           <CardContent className="p-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-xs text-coffee-600 font-medium mb-1">Transactions</p>
-                <p className="text-2xl font-bold text-coffee-900">{summary.totalTransactions}</p>
+                <p className="text-xs text-emerald-650 font-medium mb-1">Transactions</p>
+                <p className="text-2xl font-bold text-emerald-900">{summary.totalTransactions}</p>
               </div>
-              <ShoppingCart className="w-8 h-8 text-coffee-600 opacity-20" />
+              <ShoppingCart className="w-8 h-8 text-emerald-650 opacity-20" />
             </div>
           </CardContent>
         </Card>
 
         {/* Avg Transaction */}
-        <Card className="border-coffee-200">
+        <Card className="border-charcoal-200">
           <CardContent className="p-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-xs text-coffee-600 font-medium mb-1">Avg Transaction</p>
-                <p className="text-2xl font-bold text-coffee-900">{formatCurrency(summary.avgTransaction)}</p>
+                <p className="text-xs text-emerald-650 font-medium mb-1">Avg Transaction</p>
+                <p className="text-2xl font-bold text-emerald-900">{formatCurrency(summary.avgTransaction)}</p>
               </div>
-              <TrendingUp className="w-8 h-8 text-coffee-600 opacity-20" />
+              <TrendingUp className="w-8 h-8 text-emerald-650 opacity-20" />
             </div>
           </CardContent>
         </Card>
 
         {/* Top Category */}
-        <Card className="border-coffee-200">
+        <Card className="border-charcoal-200">
           <CardContent className="p-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-xs text-coffee-600 font-medium mb-1">Top Category</p>
-                <p className="text-lg font-bold text-coffee-900">{summary.topCategory}</p>
+                <p className="text-xs text-emerald-650 font-medium mb-1">Top Category</p>
+                <p className="text-lg font-bold text-emerald-900">{summary.topCategory}</p>
               </div>
-              <Package className="w-8 h-8 text-coffee-600 opacity-20" />
+              <Package className="w-8 h-8 text-emerald-650 opacity-20" />
             </div>
           </CardContent>
         </Card>
@@ -336,9 +336,9 @@ export function SalesReport() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Sales Trend Chart */}
         {salesByDate.length > 0 && (
-          <Card className="border-coffee-200">
+          <Card className="border-charcoal-200">
             <CardContent className="p-6">
-              <h3 className="font-bold text-coffee-800 mb-4">Sales Trend</h3>
+              <h3 className="font-bold text-charcoal-900 mb-4">Sales Trend</h3>
               <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={salesByDate}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e8d7c3" />
@@ -364,9 +364,9 @@ export function SalesReport() {
 
         {/* Payment Method Breakdown */}
         {paymentMethodData.length > 0 && (
-          <Card className="border-coffee-200">
+          <Card className="border-charcoal-200">
             <CardContent className="p-6">
-              <h3 className="font-bold text-coffee-800 mb-4">Payment Method Breakdown</h3>
+              <h3 className="font-bold text-charcoal-900 mb-4">Payment Method Breakdown</h3>
               <ResponsiveContainer width="100%" height={300}>
                 <PieChart>
                   <Pie
@@ -393,9 +393,9 @@ export function SalesReport() {
 
       {/* Top Products Chart */}
       {topProducts.length > 0 && (
-        <Card className="border-coffee-200">
+        <Card className="border-charcoal-200">
           <CardContent className="p-6">
-            <h3 className="font-bold text-coffee-800 mb-4">Top 5 Products</h3>
+            <h3 className="font-bold text-charcoal-900 mb-4">Top 5 Products</h3>
             <ResponsiveContainer width="100%" height={400}>
               <BarChart data={topProducts}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e8d7c3" />
@@ -420,28 +420,28 @@ export function SalesReport() {
 
       {/* Detailed Products Table */}
       {topProducts.length > 0 && (
-        <Card className="border-coffee-200">
+        <Card className="border-charcoal-200">
           <CardContent className="p-6">
-            <h3 className="font-bold text-coffee-800 mb-4">Product Summary</h3>
+            <h3 className="font-bold text-charcoal-900 mb-4">Product Summary</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-coffee-200">
-                    <th className="text-left py-3 px-4 text-coffee-700 font-semibold">Product Name</th>
-                    <th className="text-right py-3 px-4 text-coffee-700 font-semibold">Qty Sold</th>
-                    <th className="text-right py-3 px-4 text-coffee-700 font-semibold">Revenue</th>
-                    <th className="text-right py-3 px-4 text-coffee-700 font-semibold">Avg Price</th>
+                  <tr className="border-b border-charcoal-200">
+                    <th className="text-left py-3 px-4 text-emerald-700 font-semibold">Product Name</th>
+                    <th className="text-right py-3 px-4 text-emerald-700 font-semibold">Qty Sold</th>
+                    <th className="text-right py-3 px-4 text-emerald-700 font-semibold">Revenue</th>
+                    <th className="text-right py-3 px-4 text-emerald-700 font-semibold">Avg Price</th>
                   </tr>
                 </thead>
                 <tbody>
                   {topProducts.map((product, idx) => (
-                    <tr key={idx} className="border-b border-coffee-100 hover:bg-coffee-50 transition">
-                      <td className="py-3 px-4 text-coffee-900">{product.name}</td>
-                      <td className="text-right py-3 px-4 text-coffee-800 font-semibold">{product.quantity}</td>
-                      <td className="text-right py-3 px-4 text-coffee-700 font-semibold">
+                    <tr key={idx} className="border-b border-charcoal-100 hover:bg-emerald-50 transition">
+                      <td className="py-3 px-4 text-emerald-900">{product.name}</td>
+                      <td className="text-right py-3 px-4 text-charcoal-900 font-semibold">{product.quantity}</td>
+                      <td className="text-right py-3 px-4 text-emerald-700 font-semibold">
                         {formatCurrency(product.revenue)}
                       </td>
-                      <td className="text-right py-3 px-4 text-coffee-600">
+                      <td className="text-right py-3 px-4 text-emerald-650">
                         {formatCurrency(product.revenue / product.quantity)}
                       </td>
                     </tr>
@@ -455,9 +455,9 @@ export function SalesReport() {
 
       {/* Empty State */}
       {filteredTransactions.length === 0 && (
-        <Card className="bg-white border-coffee-200">
+        <Card className="bg-white border-charcoal-200">
           <CardContent className="p-12 text-center">
-            <p className="text-coffee-600 text-lg">
+            <p className="text-emerald-650 text-lg">
               {transactions.length === 0 ? 'No sales data available' : 'No sales match the selected filters'}
             </p>
           </CardContent>
