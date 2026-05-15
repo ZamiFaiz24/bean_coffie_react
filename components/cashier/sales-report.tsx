@@ -196,14 +196,14 @@ export function SalesReport() {
     return date.toISOString().split('T')[0];
   };
 
-  const COLORS = ['#8B4513', '#A0522D', '#CD853F', '#D2691E', '#BC8F8F', '#D3D3D3'];
+  const COLORS = ['#065F46', '#D4A373', '#6B7280', '#9CA3AF', '#F59E0B', '#D1D5DB'];
 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-96">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-4 border-emerald-650 border-t-transparent mx-auto mb-4"></div>
-          <p className="text-emerald-650">Loading sales data...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-emerald-600 border-t-transparent mx-auto mb-4"></div>
+          <p className="text-emerald-600">Loading sales data...</p>
         </div>
       </div>
     );
@@ -213,7 +213,7 @@ export function SalesReport() {
     return (
       <div className="text-center py-12">
         <p className="text-red-600 font-semibold mb-4">{error}</p>
-        <Button onClick={fetchTransactions} className="bg-emerald-650 hover:bg-emerald-700">
+        <Button onClick={fetchTransactions} className="bg-emerald-600 hover:bg-emerald-700">
           Retry
         </Button>
       </div>
@@ -226,16 +226,16 @@ export function SalesReport() {
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-3">
           <TrendingUp className="w-8 h-8 text-emerald-700" />
-          <h1 className="text-3xl font-bold text-charcoal-900">Sales Report</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Sales Report</h1>
         </div>
-        <Button onClick={fetchTransactions} className="bg-emerald-650 hover:bg-emerald-700 text-white">
+        <Button onClick={fetchTransactions} className="bg-emerald-600 hover:bg-emerald-700 text-white">
           <RotateCcw className="w-4 h-4 mr-2" />
           Refresh
         </Button>
       </div>
 
       {/* Filter Section */}
-      <Card className="bg-emerald-50 border-charcoal-200">
+      <Card className="bg-gray-50 border-gray-200">
         <CardContent className="p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Date From */}
@@ -245,7 +245,7 @@ export function SalesReport() {
                 type="date"
                 value={filterDateFrom ? formatDateInput(filterDateFrom) : ''}
                 onChange={(e) => setFilterDateFrom(e.target.value ? new Date(e.target.value).toISOString() : '')}
-                className="w-full px-3 py-2 border border-charcoal-200 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-650"
+                className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-600"
               />
             </div>
 
@@ -256,7 +256,7 @@ export function SalesReport() {
                 type="date"
                 value={filterDateTo ? formatDateInput(filterDateTo) : ''}
                 onChange={(e) => setFilterDateTo(e.target.value ? new Date(e.target.value).toISOString() : '')}
-                className="w-full px-3 py-2 border border-charcoal-200 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-650"
+                className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-600"
               />
             </div>
           </div>
@@ -269,7 +269,7 @@ export function SalesReport() {
                 setFilterDateTo('');
               }}
               variant="outline"
-              className="mt-4 border-charcoal-300 text-emerald-700 hover:bg-charcoal-50"
+              className="mt-4 border-gray-300 text-emerald-700 hover:bg-gray-50"
             >
               Clear Filters
             </Button>
@@ -280,53 +280,53 @@ export function SalesReport() {
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {/* Total Sales */}
-        <Card className="border-charcoal-200">
+        <Card className="border-gray-200">
           <CardContent className="p-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-xs text-emerald-650 font-medium mb-1">Total Sales</p>
+                <p className="text-xs text-emerald-600 font-medium mb-1">Total Sales</p>
                 <p className="text-2xl font-bold text-emerald-900">{formatCurrency(summary.totalSales)}</p>
               </div>
-              <DollarSign className="w-8 h-8 text-emerald-650 opacity-20" />
+              <DollarSign className="w-8 h-8 text-emerald-600 opacity-20" />
             </div>
           </CardContent>
         </Card>
 
         {/* Total Transactions */}
-        <Card className="border-charcoal-200">
+        <Card className="border-gray-200">
           <CardContent className="p-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-xs text-emerald-650 font-medium mb-1">Transactions</p>
+                <p className="text-xs text-emerald-600 font-medium mb-1">Transactions</p>
                 <p className="text-2xl font-bold text-emerald-900">{summary.totalTransactions}</p>
               </div>
-              <ShoppingCart className="w-8 h-8 text-emerald-650 opacity-20" />
+              <ShoppingCart className="w-8 h-8 text-emerald-600 opacity-20" />
             </div>
           </CardContent>
         </Card>
 
         {/* Avg Transaction */}
-        <Card className="border-charcoal-200">
+        <Card className="border-gray-200">
           <CardContent className="p-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-xs text-emerald-650 font-medium mb-1">Avg Transaction</p>
+                <p className="text-xs text-emerald-600 font-medium mb-1">Avg Transaction</p>
                 <p className="text-2xl font-bold text-emerald-900">{formatCurrency(summary.avgTransaction)}</p>
               </div>
-              <TrendingUp className="w-8 h-8 text-emerald-650 opacity-20" />
+              <TrendingUp className="w-8 h-8 text-emerald-600 opacity-20" />
             </div>
           </CardContent>
         </Card>
 
         {/* Top Category */}
-        <Card className="border-charcoal-200">
+        <Card className="border-gray-200">
           <CardContent className="p-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-xs text-emerald-650 font-medium mb-1">Top Category</p>
+                <p className="text-xs text-emerald-600 font-medium mb-1">Top Category</p>
                 <p className="text-lg font-bold text-emerald-900">{summary.topCategory}</p>
               </div>
-              <Package className="w-8 h-8 text-emerald-650 opacity-20" />
+              <Package className="w-8 h-8 text-emerald-600 opacity-20" />
             </div>
           </CardContent>
         </Card>
@@ -336,24 +336,24 @@ export function SalesReport() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Sales Trend Chart */}
         {salesByDate.length > 0 && (
-          <Card className="border-charcoal-200">
+          <Card className="border-gray-200">
             <CardContent className="p-6">
-              <h3 className="font-bold text-charcoal-900 mb-4">Sales Trend</h3>
+              <h3 className="font-bold text-gray-900 mb-4">Sales Trend</h3>
               <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={salesByDate}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e8d7c3" />
-                  <XAxis dataKey="date" stroke="#a0826d" />
-                  <YAxis stroke="#a0826d" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                  <XAxis dataKey="date" stroke="#6B7280" />
+                  <YAxis stroke="#6B7280" />
                   <Tooltip
-                    contentStyle={{ backgroundColor: '#f5e6d3', border: '1px solid #d4a574' }}
+                    contentStyle={{ backgroundColor: '#FFFFFF', border: '1px solid #D1D5DB' }}
                     formatter={(value: any) => [formatCurrency(value as number), 'Sales']}
                   />
                   <Line
                     type="monotone"
                     dataKey="sales"
-                    stroke="#8B4513"
+                    stroke="#065F46"
                     strokeWidth={2}
-                    dot={{ fill: '#8B4513', r: 4 }}
+                    dot={{ fill: '#065F46', r: 4 }}
                     activeDot={{ r: 6 }}
                   />
                 </LineChart>
@@ -364,9 +364,9 @@ export function SalesReport() {
 
         {/* Payment Method Breakdown */}
         {paymentMethodData.length > 0 && (
-          <Card className="border-charcoal-200">
+          <Card className="border-gray-200">
             <CardContent className="p-6">
-              <h3 className="font-bold text-charcoal-900 mb-4">Payment Method Breakdown</h3>
+              <h3 className="font-bold text-gray-900 mb-4">Payment Method Breakdown</h3>
               <ResponsiveContainer width="100%" height={300}>
                 <PieChart>
                   <Pie
@@ -376,7 +376,7 @@ export function SalesReport() {
                     labelLine={false}
                     label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
                     outerRadius={80}
-                    fill="#8B4513"
+                    fill="#065F46"
                     dataKey="value"
                   >
                     {paymentMethodData.map((entry, index) => (
@@ -393,25 +393,25 @@ export function SalesReport() {
 
       {/* Top Products Chart */}
       {topProducts.length > 0 && (
-        <Card className="border-charcoal-200">
+          <Card className="border-gray-200">
           <CardContent className="p-6">
-            <h3 className="font-bold text-charcoal-900 mb-4">Top 5 Products</h3>
+            <h3 className="font-bold text-gray-900 mb-4">Top 5 Products</h3>
             <ResponsiveContainer width="100%" height={400}>
               <BarChart data={topProducts}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e8d7c3" />
-                <XAxis dataKey="name" stroke="#a0826d" angle={-45} textAnchor="end" height={120} />
-                <YAxis stroke="#a0826d" yAxisId="left" label={{ value: 'Quantity', angle: -90, position: 'insideLeft' }} />
-                <YAxis stroke="#a0826d" yAxisId="right" orientation="right" label={{ value: 'Revenue', angle: 90, position: 'insideRight' }} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                <XAxis dataKey="name" stroke="#6B7280" angle={-45} textAnchor="end" height={120} />
+                <YAxis stroke="#6B7280" yAxisId="left" label={{ value: 'Quantity', angle: -90, position: 'insideLeft' }} />
+                <YAxis stroke="#6B7280" yAxisId="right" orientation="right" label={{ value: 'Revenue', angle: 90, position: 'insideRight' }} />
                 <Tooltip
-                  contentStyle={{ backgroundColor: '#f5e6d3', border: '1px solid #d4a574' }}
+                  contentStyle={{ backgroundColor: '#FFFFFF', border: '1px solid #D1D5DB' }}
                   formatter={(value: any, name: string) => {
                     if (name === 'quantity') return [value, 'Qty'];
                     return [formatCurrency(value as number), 'Revenue'];
                   }}
                 />
                 <Legend />
-                <Bar yAxisId="left" dataKey="quantity" fill="#CD853F" name="quantity" />
-                <Bar yAxisId="right" dataKey="revenue" fill="#8B4513" name="revenue" />
+                <Bar yAxisId="left" dataKey="quantity" fill="#D4A373" name="quantity" />
+                <Bar yAxisId="right" dataKey="revenue" fill="#065F46" name="revenue" />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
@@ -420,13 +420,13 @@ export function SalesReport() {
 
       {/* Detailed Products Table */}
       {topProducts.length > 0 && (
-        <Card className="border-charcoal-200">
+        <Card className="border-gray-200">
           <CardContent className="p-6">
-            <h3 className="font-bold text-charcoal-900 mb-4">Product Summary</h3>
+            <h3 className="font-bold text-gray-900 mb-4">Product Summary</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-charcoal-200">
+                  <tr className="border-b border-gray-200">
                     <th className="text-left py-3 px-4 text-emerald-700 font-semibold">Product Name</th>
                     <th className="text-right py-3 px-4 text-emerald-700 font-semibold">Qty Sold</th>
                     <th className="text-right py-3 px-4 text-emerald-700 font-semibold">Revenue</th>
@@ -435,13 +435,13 @@ export function SalesReport() {
                 </thead>
                 <tbody>
                   {topProducts.map((product, idx) => (
-                    <tr key={idx} className="border-b border-charcoal-100 hover:bg-emerald-50 transition">
+                    <tr key={idx} className="border-b border-gray-100 hover:bg-emerald-50 transition">
                       <td className="py-3 px-4 text-emerald-900">{product.name}</td>
-                      <td className="text-right py-3 px-4 text-charcoal-900 font-semibold">{product.quantity}</td>
+                      <td className="text-right py-3 px-4 text-gray-900 font-semibold">{product.quantity}</td>
                       <td className="text-right py-3 px-4 text-emerald-700 font-semibold">
                         {formatCurrency(product.revenue)}
                       </td>
-                      <td className="text-right py-3 px-4 text-emerald-650">
+                      <td className="text-right py-3 px-4 text-emerald-600">
                         {formatCurrency(product.revenue / product.quantity)}
                       </td>
                     </tr>
@@ -455,9 +455,9 @@ export function SalesReport() {
 
       {/* Empty State */}
       {filteredTransactions.length === 0 && (
-        <Card className="bg-white border-charcoal-200">
+        <Card className="bg-white border-gray-200">
           <CardContent className="p-12 text-center">
-            <p className="text-emerald-650 text-lg">
+            <p className="text-emerald-600 text-lg">
               {transactions.length === 0 ? 'No sales data available' : 'No sales match the selected filters'}
             </p>
           </CardContent>

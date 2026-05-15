@@ -65,6 +65,16 @@ export function CashierPage() {
     fetchInitialData();
   }, [router]);
 
+  useEffect(() => {
+  if (!showAlert) return;
+
+  const timer = setTimeout(() => {
+    setShowAlert(false);
+  }, 5000);
+
+  return () => clearTimeout(timer);
+}, [showAlert]);
+
   const fetchInitialData = async () => {
     try {
       setProductsLoading(true);
@@ -243,7 +253,7 @@ export function CashierPage() {
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
           <div className="text-5xl mb-4">☕</div>
-          <p className="text-emerald-650 font-semibold">Loading...</p>
+          <p className="text-emerald-600 font-semibold">Loading...</p>
         </div>
       </div>
     );
@@ -254,7 +264,7 @@ export function CashierPage() {
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
           <p className="text-red-600 font-semibold mb-4">{error}</p>
-          <p className="text-emerald-650">Redirecting...</p>
+          <p className="text-emerald-600">Redirecting...</p>
         </div>
       </div>
     );
