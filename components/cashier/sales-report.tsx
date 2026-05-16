@@ -21,7 +21,7 @@ import {
   ResponsiveContainer,
   PieChart as PieChartRechartsType,
 } from 'recharts';
-import { RotateCcw, TrendingUp, DollarSign, ShoppingCart, Package } from 'lucide-react';
+import { RotateCcw, TrendingUp, DollarSign, ShoppingCart, Package, Filter } from 'lucide-react';
 
 interface Transaction {
   id: number;
@@ -222,41 +222,50 @@ export function SalesReport() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Modern Header */}
       <div className="flex justify-between items-center">
-        <div className="flex items-center gap-3">
-          <TrendingUp className="w-8 h-8 text-emerald-700" />
-          <h1 className="text-3xl font-bold text-gray-900">Sales Report</h1>
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center">
+            <TrendingUp className="w-6 h-6 text-emerald-600" />
+          </div>
+          <div>
+            <p className="text-emerald-600 text-sm font-medium">Dashboard Analytics</p>
+            <h1 className="text-3xl font-bold text-gray-900">Sales Report</h1>
+          </div>
         </div>
-        <Button onClick={fetchTransactions} className="bg-emerald-600 hover:bg-emerald-700 text-white">
+        <Button onClick={fetchTransactions} className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold">
           <RotateCcw className="w-4 h-4 mr-2" />
           Refresh
         </Button>
       </div>
 
-      {/* Filter Section */}
-      <Card className="bg-gray-50 border-gray-200">
+      {/* Modern Filter Section */}
+      <Card className="bg-linear-to-br from-emerald-50 to-emerald-100 border-emerald-200 shadow-md">
         <CardContent className="p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <Filter className="w-5 h-5 text-emerald-600" />
+            <p className="font-semibold text-emerald-900">Filter by Date Range</p>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Date From */}
             <div>
-              <label className="block text-sm font-medium text-emerald-700 mb-2">From Date</label>
+              <label className="block text-sm font-semibold text-emerald-700 mb-2">From Date</label>
               <input
                 type="date"
                 value={filterDateFrom ? formatDateInput(filterDateFrom) : ''}
                 onChange={(e) => setFilterDateFrom(e.target.value ? new Date(e.target.value).toISOString() : '')}
-                className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-600"
+                className="w-full px-4 py-2 border border-emerald-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-600 bg-white text-gray-900"
               />
             </div>
 
             {/* Date To */}
             <div>
-              <label className="block text-sm font-medium text-emerald-700 mb-2">To Date</label>
+              <label className="block text-sm font-semibold text-emerald-700 mb-2">To Date</label>
               <input
                 type="date"
                 value={filterDateTo ? formatDateInput(filterDateTo) : ''}
                 onChange={(e) => setFilterDateTo(e.target.value ? new Date(e.target.value).toISOString() : '')}
-                className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-600"
+                className="w-full px-4 py-2 border border-emerald-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-600 bg-white text-gray-900"
               />
             </div>
           </div>
@@ -268,65 +277,64 @@ export function SalesReport() {
                 setFilterDateFrom('');
                 setFilterDateTo('');
               }}
-              variant="outline"
-              className="mt-4 border-gray-300 text-emerald-700 hover:bg-gray-50"
+              className="mt-4 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold transition"
             >
-              Clear Filters
+              ? Reset Filters
             </Button>
           )}
         </CardContent>
       </Card>
 
-      {/* Summary Cards */}
+      {/* Modern Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {/* Total Sales */}
-        <Card className="border-gray-200">
+        <Card className="border-0 shadow-md hover:shadow-lg transition bg-linear-to-br from-emerald-50 to-emerald-100 border-l-4 border-l-emerald-600">
           <CardContent className="p-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-xs text-emerald-600 font-medium mb-1">Total Sales</p>
-                <p className="text-2xl font-bold text-emerald-900">{formatCurrency(summary.totalSales)}</p>
+                <p className="text-xs font-semibold text-emerald-700 uppercase tracking-wide mb-2">Total Sales</p>
+                <p className="text-3xl font-bold text-emerald-900">{formatCurrency(summary.totalSales)}</p>
               </div>
-              <DollarSign className="w-8 h-8 text-emerald-600 opacity-20" />
+              <DollarSign className="w-10 h-10 text-emerald-600 opacity-15" />
             </div>
           </CardContent>
         </Card>
 
         {/* Total Transactions */}
-        <Card className="border-gray-200">
+        <Card className="border-0 shadow-md hover:shadow-lg transition bg-linear-to-br from-amber-50 to-amber-100 border-l-4 border-l-amber-600">
           <CardContent className="p-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-xs text-emerald-600 font-medium mb-1">Transactions</p>
-                <p className="text-2xl font-bold text-emerald-900">{summary.totalTransactions}</p>
+                <p className="text-xs font-semibold text-amber-700 uppercase tracking-wide mb-2">Transactions</p>
+                <p className="text-3xl font-bold text-amber-900">{summary.totalTransactions}</p>
               </div>
-              <ShoppingCart className="w-8 h-8 text-emerald-600 opacity-20" />
+              <ShoppingCart className="w-10 h-10 text-amber-600 opacity-15" />
             </div>
           </CardContent>
         </Card>
 
         {/* Avg Transaction */}
-        <Card className="border-gray-200">
+        <Card className="border-0 shadow-md hover:shadow-lg transition bg-linear-to-br from-blue-50 to-blue-100 border-l-4 border-l-blue-600">
           <CardContent className="p-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-xs text-emerald-600 font-medium mb-1">Avg Transaction</p>
-                <p className="text-2xl font-bold text-emerald-900">{formatCurrency(summary.avgTransaction)}</p>
+                <p className="text-xs font-semibold text-blue-700 uppercase tracking-wide mb-2">Avg Value</p>
+                <p className="text-3xl font-bold text-blue-900">{formatCurrency(summary.avgTransaction)}</p>
               </div>
-              <TrendingUp className="w-8 h-8 text-emerald-600 opacity-20" />
+              <TrendingUp className="w-10 h-10 text-blue-600 opacity-15" />
             </div>
           </CardContent>
         </Card>
 
         {/* Top Category */}
-        <Card className="border-gray-200">
+        <Card className="border-0 shadow-md hover:shadow-lg transition bg-linear-to-br from-purple-50 to-purple-100 border-l-4 border-l-purple-600">
           <CardContent className="p-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-xs text-emerald-600 font-medium mb-1">Top Category</p>
-                <p className="text-lg font-bold text-emerald-900">{summary.topCategory}</p>
+                <p className="text-xs font-semibold text-purple-700 uppercase tracking-wide mb-2">Top Product</p>
+                <p className="text-lg font-bold text-purple-900 line-clamp-2">{summary.topCategory}</p>
               </div>
-              <Package className="w-8 h-8 text-emerald-600 opacity-20" />
+              <Package className="w-10 h-10 text-purple-600 opacity-15" />
             </div>
           </CardContent>
         </Card>
@@ -336,7 +344,7 @@ export function SalesReport() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Sales Trend Chart */}
         {salesByDate.length > 0 && (
-          <Card className="border-gray-200">
+          <Card className="border-0 shadow-md">
             <CardContent className="p-6">
               <h3 className="font-bold text-gray-900 mb-4">Sales Trend</h3>
               <ResponsiveContainer width="100%" height={300}>
@@ -364,9 +372,9 @@ export function SalesReport() {
 
         {/* Payment Method Breakdown */}
         {paymentMethodData.length > 0 && (
-          <Card className="border-gray-200">
+          <Card className="border-0 shadow-md">
             <CardContent className="p-6">
-              <h3 className="font-bold text-gray-900 mb-4">Payment Method Breakdown</h3>
+              <h3 className="font-bold text-gray-900 mb-4">Payment Methods</h3>
               <ResponsiveContainer width="100%" height={300}>
                 <PieChart>
                   <Pie
@@ -393,7 +401,7 @@ export function SalesReport() {
 
       {/* Top Products Chart */}
       {topProducts.length > 0 && (
-          <Card className="border-gray-200">
+          <Card className="border-0 shadow-md">
           <CardContent className="p-6">
             <h3 className="font-bold text-gray-900 mb-4">Top 5 Products</h3>
             <ResponsiveContainer width="100%" height={400}>
@@ -420,28 +428,28 @@ export function SalesReport() {
 
       {/* Detailed Products Table */}
       {topProducts.length > 0 && (
-        <Card className="border-gray-200">
+        <Card className="border-0 shadow-md">
           <CardContent className="p-6">
             <h3 className="font-bold text-gray-900 mb-4">Product Summary</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-3 px-4 text-emerald-700 font-semibold">Product Name</th>
-                    <th className="text-right py-3 px-4 text-emerald-700 font-semibold">Qty Sold</th>
-                    <th className="text-right py-3 px-4 text-emerald-700 font-semibold">Revenue</th>
-                    <th className="text-right py-3 px-4 text-emerald-700 font-semibold">Avg Price</th>
+                  <tr className="border-b-2 border-emerald-600 bg-linear-to-r from-emerald-50 to-emerald-100">
+                    <th className="text-left py-4 px-4 text-emerald-900 font-bold">Product Name</th>
+                    <th className="text-right py-4 px-4 text-emerald-900 font-bold">Qty Sold</th>
+                    <th className="text-right py-4 px-4 text-emerald-900 font-bold">Revenue</th>
+                    <th className="text-right py-4 px-4 text-emerald-900 font-bold">Avg Price</th>
                   </tr>
                 </thead>
                 <tbody>
                   {topProducts.map((product, idx) => (
-                    <tr key={idx} className="border-b border-gray-100 hover:bg-emerald-50 transition">
-                      <td className="py-3 px-4 text-emerald-900">{product.name}</td>
-                      <td className="text-right py-3 px-4 text-gray-900 font-semibold">{product.quantity}</td>
-                      <td className="text-right py-3 px-4 text-emerald-700 font-semibold">
+                    <tr key={idx} className="border-b border-gray-200 hover:bg-emerald-50 hover:shadow-sm transition">
+                      <td className="py-4 px-4 text-gray-900 font-medium">{product.name}</td>
+                      <td className="text-right py-4 px-4 text-gray-900 font-semibold">{product.quantity}</td>
+                      <td className="text-right py-4 px-4 text-emerald-700 font-bold">
                         {formatCurrency(product.revenue)}
                       </td>
-                      <td className="text-right py-3 px-4 text-emerald-600">
+                      <td className="text-right py-4 px-4 text-emerald-600 font-semibold">
                         {formatCurrency(product.revenue / product.quantity)}
                       </td>
                     </tr>
@@ -455,9 +463,9 @@ export function SalesReport() {
 
       {/* Empty State */}
       {filteredTransactions.length === 0 && (
-        <Card className="bg-white border-gray-200">
+        <Card className="bg-linear-to-r from-emerald-50 to-emerald-100 border-emerald-200 border-0 shadow-md">
           <CardContent className="p-12 text-center">
-            <p className="text-emerald-600 text-lg">
+            <p className="text-emerald-700 text-lg font-semibold">
               {transactions.length === 0 ? 'No sales data available' : 'No sales match the selected filters'}
             </p>
           </CardContent>
@@ -466,3 +474,11 @@ export function SalesReport() {
     </div>
   );
 }
+
+
+
+
+
+
+
+
