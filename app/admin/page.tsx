@@ -31,10 +31,10 @@ export default function AdminDashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="min-h-screen flex items-center justify-center bg-brand-background">
         <div className="flex flex-col items-center space-y-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600"></div>
-          <p className="text-gray-600">Loading...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-primary"></div>
+          <p className="text-brand-text/70">Loading...</p>
         </div>
       </div>
     );
@@ -42,10 +42,10 @@ export default function AdminDashboardPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="bg-white rounded-lg shadow p-6 max-w-md">
+      <div className="min-h-screen flex items-center justify-center bg-brand-background">
+        <div className="bg-brand-surface rounded-2xl shadow-card p-6 max-w-md border border-gray-200">
           <p className="text-red-600 mb-4">{error}</p>
-          <p className="text-gray-600 text-sm">Redirecting...</p>
+          <p className="text-brand-text/70 text-sm">Redirecting...</p>
         </div>
       </div>
     );

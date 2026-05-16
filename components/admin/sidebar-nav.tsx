@@ -21,16 +21,16 @@ export function SidebarNav({ activeTab, onTabChange, isOpen = true, onClose }: S
   ];
 
   return (
-    <div className="w-64 h-screen bg-slate-800 text-slate-100 flex flex-col border-r border-slate-700">
+    <div className="w-64 h-screen bg-emerald-900 text-white flex flex-col border-r border-emerald-800">
       {/* Logo Section */}
-      <div className="p-6 border-b border-slate-700">
+      <div className="p-6 border-b border-emerald-800">
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 bg-amber-500 rounded flex items-center justify-center text-slate-900">
-            <span className="text-lg">☕</span>
+          <div className="w-10 h-10 rounded-lg overflow-hidden bg-white/10 shadow-sm flex items-center justify-center">
+            <img src="/images/coffie.jpg" alt="Bean Coffee logo" className="w-full h-full object-contain" />
           </div>
           <div>
             <h2 className="font-bold text-lg">Bean Coffee</h2>
-            <p className="text-xs text-slate-400">Admin Panel</p>
+            <p className="text-xs text-white/70">Admin Panel</p>
           </div>
         </div>
       </div>
@@ -49,8 +49,8 @@ export function SidebarNav({ activeTab, onTabChange, isOpen = true, onClose }: S
               }}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                 isActive
-                  ? 'bg-amber-500 text-slate-900 font-medium'
-                  : 'text-slate-300 hover:bg-slate-700'
+                  ? 'bg-amber-400 text-gray-900 font-medium shadow-sm'
+                  : 'text-white/80 hover:bg-white/10'
               }`}
             >
               <Icon className="w-5 h-5" />
@@ -61,7 +61,7 @@ export function SidebarNav({ activeTab, onTabChange, isOpen = true, onClose }: S
       </nav>
 
       {/* Logout Button */}
-      <div className="p-4 border-t border-slate-700">
+      <div className="p-4 border-t border-emerald-800">
         <Button
           className="w-full gap-2 bg-red-600 hover:bg-red-700 text-white"
           onClick={() => {

@@ -150,7 +150,7 @@ export function ProductFormModal({
         </DialogHeader>
 
         {loading ? (
-          <div className="py-8 text-center text-slate-600">Loading...</div>
+          <div className="py-8 text-center text-brand-text/70">Loading...</div>
         ) : (
           <div className="space-y-6">
             {error && (
@@ -164,7 +164,7 @@ export function ProductFormModal({
               <Label>Product Image</Label>
               <div className="flex gap-4">
                 {/* Preview */}
-                <div className="w-32 h-32 rounded-lg border-2 border-dashed border-slate-300 flex items-center justify-center bg-slate-50 overflow-hidden">
+                <div className="w-32 h-32 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center bg-brand-background overflow-hidden">
                   {imagePreview ? (
                     <img
                       src={imagePreview}
@@ -172,7 +172,7 @@ export function ProductFormModal({
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="text-center text-slate-400">
+                    <div className="text-center text-brand-text/30">
                       <Upload className="w-6 h-6 mx-auto mb-1" />
                       <p className="text-xs">No Image</p>
                     </div>
@@ -181,13 +181,13 @@ export function ProductFormModal({
 
                 {/* Upload Input */}
                 <div className="flex-1">
-                  <label className="flex flex-col items-center justify-center w-full p-4 border-2 border-dashed border-slate-300 rounded-lg cursor-pointer hover:border-amber-500 bg-slate-50 hover:bg-slate-100 transition">
+                  <label className="flex flex-col items-center justify-center w-full p-4 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-brand-primary bg-brand-background hover:bg-white transition">
                     <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                      <Upload className="w-8 h-8 text-slate-400 mb-2" />
-                      <p className="text-sm text-slate-600">
+                      <Upload className="w-8 h-8 text-brand-text/30 mb-2" />
+                      <p className="text-sm text-brand-text/70">
                         <span className="font-semibold">Click untuk upload</span> atau drag and drop
                       </p>
-                      <p className="text-xs text-slate-500 mt-1">PNG, JPG, GIF up to 5MB</p>
+                      <p className="text-xs text-brand-text/50 mt-1">PNG, JPG, GIF up to 5MB</p>
                     </div>
                     <input
                       type="file"
@@ -222,7 +222,7 @@ export function ProductFormModal({
                   placeholder="e.g., Espresso"
                   value={formData.name || ''}
                   onChange={(e) => handleInputChange('name', e.target.value)}
-                  className="border-slate-200 focus:border-amber-500 focus:ring-amber-500"
+                  className="border-gray-200 focus:border-brand-primary focus:ring-brand-primary"
                 />
               </div>
 
@@ -234,7 +234,7 @@ export function ProductFormModal({
                   placeholder="e.g., 25000"
                   value={formData.price || 0}
                   onChange={(e) => handleInputChange('price', parseInt(e.target.value))}
-                  className="border-slate-200 focus:border-amber-500 focus:ring-amber-500"
+                  className="border-gray-200 focus:border-brand-primary focus:ring-brand-primary"
                 />
               </div>
 
@@ -246,7 +246,7 @@ export function ProductFormModal({
                   placeholder="e.g., 50"
                   value={formData.stock || 0}
                   onChange={(e) => handleInputChange('stock', parseInt(e.target.value))}
-                  className="border-slate-200 focus:border-amber-500 focus:ring-amber-500"
+                  className="border-gray-200 focus:border-brand-primary focus:ring-brand-primary"
                 />
               </div>
 
@@ -262,7 +262,7 @@ export function ProductFormModal({
                       handleInputChange('category', selectedCategory);
                     }
                   }}
-                  className="w-full px-3 py-2 border border-slate-200 rounded-md focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+                  className="w-full px-3 py-2 border border-gray-200 rounded-md focus:border-brand-primary focus:ring-1 focus:ring-brand-primary"
                 >
                   {categories.map((cat) => (
                     <option key={cat.id} value={cat.id}>
@@ -282,7 +282,7 @@ export function ProductFormModal({
           <Button
             onClick={handleSave}
             disabled={saving || loading}
-            className="bg-amber-500 hover:bg-amber-600 text-slate-900"
+            className="bg-brand-primary hover:bg-brand-hover text-white"
           >
             {saving ? 'Saving...' : mode === 'create' ? 'Add Product' : 'Save Changes'}
           </Button>

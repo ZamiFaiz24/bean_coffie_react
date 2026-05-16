@@ -34,8 +34,8 @@ export function Sidebar({
         </button>
 
         {/* Logo */}
-        <div className="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center text-white">
-          <Coffee className="w-6 h-6" />
+        <div className="w-10 h-10 rounded-lg overflow-hidden bg-gray-50 border border-gray-200 flex items-center justify-center">
+          <img src="/images/coffie.jpg" alt="Bean Coffee logo" className="w-full h-full object-contain" />
         </div>
 
         {/* Menu Items - Icons Only */}
@@ -78,8 +78,8 @@ export function Sidebar({
       <div className="p-6 border-b border-gray-200">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center text-white">
-              <Coffee className="w-6 h-6" />
+            <div className="w-10 h-10 rounded-lg overflow-hidden bg-gray-50 border border-gray-200 flex items-center justify-center">
+              <img src="/images/coffie.jpg" alt="Bean Coffee logo" className="w-full h-full object-contain" />
             </div>
             <div>
               <h1 className="text-lg font-bold text-gray-900">Bean Coffee</h1>

@@ -18,7 +18,7 @@ export function AdminDashboard() {
     useAdminDashboard();
 
   return (
-    <div className="flex h-screen overflow-hidden bg-slate-50">
+    <div className="flex h-screen overflow-hidden bg-gray-50">
       {/* Desktop Sidebar */}
       <div className="hidden lg:block">
         <SidebarNav activeTab={activeTab} onTabChange={setActiveTab} />
@@ -42,35 +42,38 @@ export function AdminDashboard() {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="bg-slate-800 text-slate-100 border-b border-slate-700 px-6 py-4 flex items-center justify-between shadow-lg">
+        <header className="bg-emerald-900 text-white border-b border-emerald-800 px-6 py-4 flex items-center justify-between shadow-card">
           <div className="flex items-center gap-4">
             <Button
               variant="ghost"
               size="sm"
-              className="lg:hidden text-slate-100 hover:bg-slate-700"
+              className="lg:hidden text-white hover:bg-white/10"
               onClick={() => setSidebarOpen(true)}
             >
               <Menu className="w-5 h-5" />
             </Button>
+            <div className="w-8 h-8 rounded-lg overflow-hidden bg-white/10 shadow-sm flex items-center justify-center">
+              <img src="/images/coffie.jpg" alt="Bean Coffee logo" className="w-full h-full object-contain" />
+            </div>
             <div>
               <h1 className="text-xl font-bold flex items-center gap-2">☕ Bean Coffee POS</h1>
-              <p className="text-xs text-slate-400">Admin Dashboard</p>
+              <p className="text-xs text-white/70">Admin Dashboard</p>
             </div>
           </div>
           <div className="text-right hidden sm:block">
-            <p className="text-sm font-medium text-amber-500">Admin User</p>
-            <p className="text-xs text-slate-400">Administrator</p>
+            <p className="text-sm font-medium text-amber-400">Admin User</p>
+            <p className="text-xs text-white/70">Administrator</p>
           </div>
         </header>
 
         {/* Content Area */}
-        <div className="flex-1 overflow-auto bg-slate-50">
+        <div className="flex-1 overflow-auto bg-gray-50">
           <div className="p-6 space-y-6">
             {activeTab === 'overview' && (
               <>
                 <div>
-                  <h2 className="text-3xl font-bold text-slate-900">Dashboard Overview</h2>
-                  <p className="text-slate-600 mt-1">Welcome back to BeanStock Admin Panel</p>
+                  <h2 className="text-3xl font-bold text-gray-900">Dashboard Overview</h2>
+                  <p className="text-gray-600 mt-1">Welcome back to BeanStock Admin Panel</p>
                 </div>
 
                 {error && (
@@ -80,7 +83,7 @@ export function AdminDashboard() {
                 )}
 
                 {loading ? (
-                  <div className="text-center py-12 text-slate-600">Loading dashboard...</div>
+                  <div className="text-center py-12 text-gray-600">Loading dashboard...</div>
                 ) : (
                   <>
                     <SummaryCards cards={summaryCardsData} />
@@ -102,9 +105,9 @@ export function AdminDashboard() {
 
             {activeTab === 'low-stock' && (
               <>
-                <h2 className="text-3xl font-bold text-slate-900">Low Stock Management</h2>
+                <h2 className="text-3xl font-bold text-gray-900">Low Stock Management</h2>
                 {loading ? (
-                  <div className="text-center py-12 text-slate-600">Loading...</div>
+                  <div className="text-center py-12 text-gray-600">Loading...</div>
                 ) : (
                   <LowStockAlerts products={lowStockProducts} />
                 )}
@@ -113,9 +116,9 @@ export function AdminDashboard() {
 
             {activeTab === 'top-sales' && (
               <>
-                <h2 className="text-3xl font-bold text-slate-900">Top Sales Report</h2>
+                <h2 className="text-3xl font-bold text-gray-900">Top Sales Report</h2>
                 {loading ? (
-                  <div className="text-center py-12 text-slate-600">Loading...</div>
+                  <div className="text-center py-12 text-gray-600">Loading...</div>
                 ) : (
                   <TopProducts products={topProducts} />
                 )}
@@ -124,8 +127,8 @@ export function AdminDashboard() {
 
             {activeTab === 'settings' && (
               <div className="text-center py-12">
-                <h2 className="text-2xl font-bold text-slate-900">Settings</h2>
-                <p className="text-slate-600">Feature coming soon</p>
+                <h2 className="text-2xl font-bold text-gray-900">Settings</h2>
+                <p className="text-gray-600">Feature coming soon</p>
               </div>
             )}
           </div>

@@ -1,7 +1,6 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { TopProduct } from '@/types';
 import { Trophy } from 'lucide-react';
 
@@ -20,9 +19,9 @@ export function TopProducts({ products }: TopProductsProps) {
       case 2:
         return 'bg-gradient-to-r from-gray-300 to-gray-500';
       case 3:
-        return 'bg-gradient-to-r from-orange-400 to-orange-600';
+        return 'bg-gradient-to-r from-emerald-400 to-emerald-600';
       default:
-        return 'bg-slate-600';
+        return 'bg-gray-600';
     }
   };
 
@@ -40,10 +39,10 @@ export function TopProducts({ products }: TopProductsProps) {
   };
 
   return (
-    <Card>
+    <Card className="bg-white border-gray-200 shadow-card">
       <CardHeader>
-        <CardTitle className="text-slate-900 flex items-center gap-2">
-          <Trophy className="w-5 h-5 text-amber-500" />
+        <CardTitle className="text-gray-900 flex items-center gap-2">
+          <Trophy className="w-5 h-5 text-emerald-800" />
           Top Selling Products
         </CardTitle>
       </CardHeader>
@@ -53,10 +52,10 @@ export function TopProducts({ products }: TopProductsProps) {
           <div className="space-y-4">
             {/* Rank 1 - Largest */}
             {topThree[0] && (
-              <div className="p-4 bg-gradient-to-br from-amber-50 to-amber-100 rounded-lg border-2 border-amber-300 hover:shadow-lg transition-shadow">
+              <div className="p-5 bg-linear-to-br from-gray-50 to-white rounded-2xl border-2 border-amber-200 hover:shadow-card transition-shadow">
                 <div className="flex items-center gap-4">
                   {/* Image */}
-                  <div className="w-24 h-24 rounded-lg overflow-hidden bg-slate-200 flex-shrink-0">
+                  <div className="w-24 h-24 rounded-2xl overflow-hidden bg-gray-200 shrink-0 ring-2 ring-amber-200">
                     {topThree[0].image_url ? (
                       <img src={topThree[0].image_url} alt={topThree[0].name} className="w-full h-full object-cover" />
                     ) : (
@@ -68,17 +67,17 @@ export function TopProducts({ products }: TopProductsProps) {
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
                       <span className="text-3xl">{getMedalIcon(1)}</span>
-                      <h3 className="text-2xl font-bold text-slate-900">{topThree[0].name}</h3>
+                      <h3 className="text-2xl font-bold text-gray-900">{topThree[0].name}</h3>
                     </div>
-                    <p className="text-sm text-slate-600 mb-3">Top performing product</p>
+                    <p className="text-sm text-gray-600 mb-3">Top performing product</p>
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <p className="text-xs text-slate-600">Units Sold</p>
-                        <p className="text-lg font-bold text-slate-900">{Math.round(topThree[0].sold)}</p>
+                        <p className="text-xs text-gray-600">Units Sold</p>
+                        <p className="text-lg font-bold text-gray-900">{Math.round(topThree[0].sold)}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-slate-600">Revenue</p>
-                        <p className="text-lg font-bold text-amber-600">Rp {topThree[0].revenue.toLocaleString()}</p>
+                        <p className="text-xs text-gray-600">Revenue</p>
+                        <p className="text-lg font-bold text-emerald-800">Rp {topThree[0].revenue.toLocaleString()}</p>
                       </div>
                     </div>
                   </div>
@@ -91,11 +90,11 @@ export function TopProducts({ products }: TopProductsProps) {
               {topThree.slice(1).map((product) => (
                 <div
                   key={product.id}
-                  className="p-4 bg-gradient-to-br from-slate-50 to-slate-100 rounded-lg border border-slate-300 hover:shadow-md transition-shadow"
+                  className="p-4 bg-gray-50 rounded-2xl border border-gray-200 hover:shadow-sm transition-shadow"
                 >
                   <div className="flex items-start gap-3">
                     {/* Image */}
-                    <div className="w-16 h-16 rounded-lg overflow-hidden bg-slate-200 flex-shrink-0">
+                    <div className="w-16 h-16 rounded-xl overflow-hidden bg-gray-200 shrink-0 ring-1 ring-gray-200">
                       {product.image_url ? (
                         <img src={product.image_url} alt={product.name} className="w-full h-full object-cover" />
                       ) : (
@@ -107,10 +106,10 @@ export function TopProducts({ products }: TopProductsProps) {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
                         <span className="text-2xl">{getMedalIcon(product.rank)}</span>
-                        <h4 className="font-bold text-slate-900 truncate">{product.name}</h4>
+                        <h4 className="font-bold text-gray-900 truncate">{product.name}</h4>
                       </div>
-                      <p className="text-xs text-slate-600 mb-2">{Math.round(product.sold)} sold</p>
-                      <p className="text-sm font-bold text-slate-700">Rp {product.revenue.toLocaleString()}</p>
+                      <p className="text-xs text-gray-600 mb-2">{Math.round(product.sold)} sold</p>
+                      <p className="text-sm font-bold text-emerald-800">Rp {product.revenue.toLocaleString()}</p>
                     </div>
                   </div>
                 </div>
@@ -121,21 +120,21 @@ export function TopProducts({ products }: TopProductsProps) {
 
         {/* Other Products (Rank 4+) */}
         {others.length > 0 && (
-          <div className="space-y-3 border-t border-slate-200 pt-4">
-            <h4 className="text-sm font-semibold text-slate-700">Other Top Sellers</h4>
+          <div className="space-y-3 border-t border-gray-200 pt-4">
+            <h4 className="text-sm font-semibold text-gray-700">Other Top Sellers</h4>
             <div className="space-y-2">
               {others.map((product) => (
                 <div
                   key={product.id}
-                  className="flex items-center justify-between p-2 bg-slate-50 rounded border border-slate-200 hover:bg-slate-100 transition-colors"
+                  className="flex items-center justify-between p-2 bg-white rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
                 >
                   <div className="flex items-center gap-2 min-w-0">
-                    <span className="text-sm font-bold text-slate-600 flex-shrink-0">#{product.rank}</span>
-                    <p className="text-sm font-medium text-slate-900 truncate">{product.name}</p>
+                    <span className="text-sm font-bold text-gray-600 shrink-0">#{product.rank}</span>
+                    <p className="text-sm font-medium text-gray-900 truncate">{product.name}</p>
                   </div>
-                  <div className="text-right flex-shrink-0">
-                    <p className="text-xs text-slate-600">{Math.round(product.sold)} sold</p>
-                    <p className="text-sm font-semibold text-slate-700">Rp {Math.round(product.revenue).toLocaleString()}</p>
+                  <div className="text-right shrink-0">
+                    <p className="text-xs text-gray-600">{Math.round(product.sold)} sold</p>
+                    <p className="text-sm font-semibold text-emerald-800">Rp {Math.round(product.revenue).toLocaleString()}</p>
                   </div>
                 </div>
               ))}
@@ -145,7 +144,7 @@ export function TopProducts({ products }: TopProductsProps) {
 
         {products.length === 0 && (
           <div className="text-center py-8">
-            <p className="text-slate-600">No products sold yet</p>
+            <p className="text-gray-600">No products sold yet</p>
           </div>
         )}
       </CardContent>

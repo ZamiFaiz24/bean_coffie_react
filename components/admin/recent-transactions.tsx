@@ -10,35 +10,35 @@ interface RecentTransactionsProps {
 
 export function RecentTransactions({ transactions }: RecentTransactionsProps) {
   return (
-    <Card>
+    <Card className="bg-brand-surface border-gray-200 shadow-card">
       <CardHeader>
-        <CardTitle className="text-slate-900">Recent Transactions</CardTitle>
+        <CardTitle className="text-brand-text">Recent Transactions</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-3">
           {transactions.map((transaction) => (
             <div
               key={transaction.id}
-              className="flex items-center justify-between p-3 border border-slate-200 rounded-lg hover:shadow-md transition-shadow duration-200"
+              className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:shadow-sm transition-shadow duration-200"
             >
               <div>
-                <p className="font-medium text-slate-900">{transaction.invoiceNumber}</p>
-                <p className="text-sm text-slate-600">
+                <p className="font-medium text-brand-text">{transaction.invoiceNumber}</p>
+                <p className="text-sm text-brand-text/70">
                   Cashier: {transaction.cashierName || '-'}
                 </p>
-                <p className="text-sm text-slate-600">
+                <p className="text-sm text-brand-text/70">
                   Customer: {transaction.customerName || '-'}
                 </p>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-brand-text/50">
                   {new Date(transaction.dateTime).toLocaleString('id-ID')}
                 </p>
               </div>
 
               <div className="text-right">
-                <p className="font-semibold text-amber-600">
+                <p className="font-semibold text-brand-accent">
                   Rp {Number(transaction.amount).toLocaleString('id-ID')}
                 </p>
-                <p className="text-sm capitalize text-slate-600">{transaction.status}</p>
+                <p className="text-sm capitalize text-brand-text/70">{transaction.status}</p>
               </div>
             </div>
           ))}
