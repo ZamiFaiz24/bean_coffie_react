@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { LayoutDashboard, Package, AlertCircle, TrendingUp, Settings, LogOut, ChevronLeft } from 'lucide-react';
+import { LayoutDashboard, Package, AlertCircle, TrendingUp, Settings, LogOut, ChevronLeft, Boxes } from 'lucide-react';
 import { useState } from 'react';
 
 interface SidebarNavProps {
@@ -14,6 +14,7 @@ interface SidebarNavProps {
 export function SidebarNav({ activeTab, onTabChange, isOpen = true, onClose }: SidebarNavProps) {
   const navItems = [
     { id: 'overview', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'materials', label: 'Materials', icon: Boxes },
     { id: 'products', label: 'Products', icon: Package },
     { id: 'low-stock', label: 'Low Stock', icon: AlertCircle },
     { id: 'top-sales', label: 'Top Sales', icon: TrendingUp },

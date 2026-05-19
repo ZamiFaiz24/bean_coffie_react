@@ -13,6 +13,17 @@ export interface Category {
   name: string;
 }
 
+export type MaterialStatus = 'healthy' | 'low' | 'critical';
+
+export interface Material {
+  id: number;
+  name: string;
+  unit: string;
+  stock: number;
+  created_at?: string;
+  updated_at?: string;
+}
+
 export interface CartItem {
   id: string;
   name: string;

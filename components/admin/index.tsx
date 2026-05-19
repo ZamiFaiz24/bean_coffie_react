@@ -9,10 +9,11 @@ import { TopProducts } from './top-products';
 import { LowStockAlerts } from './low-stock-alerts';
 import { RecentTransactions } from './recent-transactions';
 import { ProductsManagement } from './products-management';
+import { MaterialsManagement } from './materials-management';
 import { useAdminDashboard } from '@/hooks/useAdminDashboard';
 
 export function AdminDashboard() {
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState('materials');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { summaryCardsData, topProducts, lowStockProducts, transactions, loading, error } =
     useAdminDashboard();
@@ -101,6 +102,10 @@ export function AdminDashboard() {
 
             {activeTab === 'products' && (
               <ProductsManagement />
+            )}
+
+            {activeTab === 'materials' && (
+              <MaterialsManagement />
             )}
 
             {activeTab === 'low-stock' && (
