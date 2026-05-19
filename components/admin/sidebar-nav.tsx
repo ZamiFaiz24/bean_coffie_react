@@ -1,8 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { LayoutDashboard, Package, AlertCircle, TrendingUp, Settings, LogOut, ChevronLeft, Boxes } from 'lucide-react';
-import { useState } from 'react';
+import { LayoutDashboard, Package, TrendingUp, Settings, LogOut, Boxes } from 'lucide-react';
 
 interface SidebarNavProps {
   activeTab: string;
@@ -21,22 +20,22 @@ export function SidebarNav({ activeTab, onTabChange, isOpen = true, onClose }: S
   ];
 
   return (
-    <div className="w-64 h-screen bg-white text-emerald-800 flex flex-col border-r border-emerald-800">
+    <div className="flex h-screen w-64 flex-col border-r border-emerald-100 bg-white/95 text-emerald-900 shadow-[0_0_0_1px_rgba(16,185,129,0.06)] backdrop-blur-sm">
       {/* Logo Section */}
-      <div className="p-6">
-        <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 rounded-lg overflow-hidden bg-white/10 shadow-sm flex items-center justify-center">
+      <div className="border-b border-emerald-100 px-6 py-6">
+        <div className="mb-2 flex items-center gap-3">
+          <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-2xl bg-emerald-50 shadow-sm ring-1 ring-emerald-100">
             <img src="/images/coffie.jpg" alt="Bean Coffee logo" className="w-full h-full object-contain" />
           </div>
           <div>
             <h2 className="font-bold text-lg">Bean Coffee</h2>
-            <p className="text-xs text-gray-600">Admin Panel</p>
+            <p className="text-xs text-gray-500">Operations Dashboard</p>
           </div>
         </div>
       </div>
 
       {/* Navigation Items */}
-      <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
+      <nav className="flex-1 space-y-2 overflow-y-auto p-4">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
@@ -47,13 +46,13 @@ export function SidebarNav({ activeTab, onTabChange, isOpen = true, onClose }: S
                 onTabChange(item.id);
                 onClose?.();
               }}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors border border-emerald-200 ${
+              className={`flex w-full items-center gap-3 rounded-xl border px-4 py-3 text-left transition-all duration-200 ${
                 isActive
-                  ? 'bg-amber-400 text-gray-900 font-medium shadow-sm'
-                  : 'text-gray-800 hover:bg-emerald-800 hover:text-white'
+                  ? 'border-emerald-200 bg-emerald-50 text-emerald-900 shadow-sm'
+                  : 'border-transparent text-gray-700 hover:border-emerald-100 hover:bg-emerald-50 hover:text-emerald-900'
               }`}
             >
-              <Icon className="w-5 h-5" />
+              <Icon className={`h-5 w-5 ${isActive ? 'text-emerald-700' : 'text-gray-500'}`} />
               <span className="font-medium">{item.label}</span>
             </button>
           );
@@ -61,9 +60,9 @@ export function SidebarNav({ activeTab, onTabChange, isOpen = true, onClose }: S
       </nav>
 
       {/* Logout Button */}
-      <div className="p-4 border-t border-emerald-800">
+      <div className="border-t border-emerald-100 p-4">
         <Button
-          className="w-full gap-2 bg-red-600 hover:bg-red-700 text-white"
+          className="w-full gap-2 rounded-xl bg-red-600 text-white shadow-sm transition hover:bg-red-700"
           onClick={() => {
             localStorage.removeItem('auth_token');
             window.location.href = '/login';
