@@ -16,22 +16,21 @@ export function SidebarNav({ activeTab, onTabChange, isOpen = true, onClose }: S
     { id: 'overview', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'materials', label: 'Materials', icon: Boxes },
     { id: 'products', label: 'Products', icon: Package },
-    { id: 'low-stock', label: 'Low Stock', icon: AlertCircle },
     { id: 'top-sales', label: 'Top Sales', icon: TrendingUp },
     { id: 'settings', label: 'Settings', icon: Settings },
   ];
 
   return (
-    <div className="w-64 h-screen bg-emerald-900 text-white flex flex-col border-r border-emerald-800">
+    <div className="w-64 h-screen bg-white text-emerald-800 flex flex-col border-r border-emerald-800">
       {/* Logo Section */}
-      <div className="p-6 border-b border-emerald-800">
+      <div className="p-6">
         <div className="flex items-center gap-3 mb-2">
           <div className="w-10 h-10 rounded-lg overflow-hidden bg-white/10 shadow-sm flex items-center justify-center">
             <img src="/images/coffie.jpg" alt="Bean Coffee logo" className="w-full h-full object-contain" />
           </div>
           <div>
             <h2 className="font-bold text-lg">Bean Coffee</h2>
-            <p className="text-xs text-white/70">Admin Panel</p>
+            <p className="text-xs text-gray-600">Admin Panel</p>
           </div>
         </div>
       </div>
@@ -48,10 +47,10 @@ export function SidebarNav({ activeTab, onTabChange, isOpen = true, onClose }: S
                 onTabChange(item.id);
                 onClose?.();
               }}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors border border-emerald-200 ${
                 isActive
                   ? 'bg-amber-400 text-gray-900 font-medium shadow-sm'
-                  : 'text-white/80 hover:bg-white/10'
+                  : 'text-gray-800 hover:bg-emerald-800 hover:text-white'
               }`}
             >
               <Icon className="w-5 h-5" />

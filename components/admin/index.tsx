@@ -57,7 +57,7 @@ export function AdminDashboard() {
               <img src="/images/coffie.jpg" alt="Bean Coffee logo" className="w-full h-full object-contain" />
             </div>
             <div>
-              <h1 className="text-xl font-bold flex items-center gap-2">☕ Bean Coffee POS</h1>
+              <h1 className="text-xl font-bold flex items-center gap-2">Bean Coffee POS</h1>
               <p className="text-xs text-white/70">Admin Dashboard</p>
             </div>
           </div>

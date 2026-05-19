@@ -144,7 +144,7 @@ export function ProductFormModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
@@ -275,14 +275,15 @@ export function ProductFormModal({
           </div>
         )}
 
-        <DialogFooter>
-          <Button variant="outline" onClick={onClose}>
+        <DialogFooter className="gap-3 sm:gap-3">
+          <Button type="button" variant="outline" onClick={onClose}>
             Cancel
           </Button>
           <Button
+            type="button"
             onClick={handleSave}
             disabled={saving || loading}
-            className="bg-brand-primary hover:bg-brand-hover text-white"
+            className="border border-emerald-700 bg-emerald-700 text-white shadow-sm hover:bg-emerald-800 hover:text-white"
           >
             {saving ? 'Saving...' : mode === 'create' ? 'Add Product' : 'Save Changes'}
           </Button>
